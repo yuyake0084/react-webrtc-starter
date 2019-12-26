@@ -1,8 +1,8 @@
 {
-  "name": "webrtc-training",
+  "name": "react-webrtc-starter",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/yuyake0084/webrtc-training.git",
+  "repository": "https://github.com/yuyake0084/react-webrtc-starter.git",
   "author": "yuyake0084 <yuyake0084@gmail.com>",
   "scripts": {
     "test": "jest",
