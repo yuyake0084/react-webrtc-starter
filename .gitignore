@@ -8,6 +8,7 @@ node_trace*
 .clinic
 .eslintcache
 .vscode/
+*.log
 
 .env.dev
 .env.prod
