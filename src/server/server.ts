@@ -3,6 +3,8 @@ import express from 'express'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
 
+import router from './router'
+
 export default (): void => {
   const app = express()
   const port = process.env.PORT || 3000
@@ -10,6 +12,8 @@ export default (): void => {
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
   app.use(compression({ level: 5 }))
+
+  router(app)
 
   // HMR
   if (process.env.NODE_ENV === 'development') {

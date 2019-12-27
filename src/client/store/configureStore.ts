@@ -16,16 +16,12 @@ const createEnhancer = <T extends ReturnType<typeof createSagaMiddleware>>(
   return composeEnhancer(applyMiddleware(sagaMiddleware))
 }
 
-export const configureStore = (
-  preloadedState: Record<string, any> = {},
-): {
-  store: Store
-  runSaga: () => Promise<SagaMiddleware<typeof rootSaga>['run']>
-} => {
+export const configureStore = (preloadedState: Record<string, any> = {}): any => {
   const sagaMiddleware = createSagaMiddleware()
   const enhancer = createEnhancer(sagaMiddleware)
   const store = createStore(rootReducer, preloadedState, enhancer)
-  const runSaga = async () => sagaMiddleware.run(rootSaga).toPromise()
+  const runSaga = async (): Promise<SagaMiddleware<typeof rootSaga>['run']> =>
+    sagaMiddleware.run(rootSaga).toPromise()
 
   // for client-side
   if (!process.env.IS_SERVER) {
@@ -41,7 +37,6 @@ export const configureStore = (
   }
 
   return {
-    // @ts-ignore
     store,
     runSaga,
   }
