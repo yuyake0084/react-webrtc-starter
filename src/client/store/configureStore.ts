@@ -8,7 +8,9 @@ import { rootSaga } from '../sagas'
 
 export const history = process.env.IS_SERVER ? createMemoryHistory() : createBrowserHistory()
 
-const createEnhancer = (sagaMiddleware: ReturnType<typeof createSagaMiddleware>) => {
+const createEnhancer = <T extends ReturnType<typeof createSagaMiddleware>>(
+  sagaMiddleware: T,
+): any => {
   const composeEnhancer = composeWithDevTools({})
 
   return composeEnhancer(applyMiddleware(sagaMiddleware))
@@ -32,9 +34,9 @@ export const configureStore = (
 
   if (module.hot) {
     module.hot.accept('../reducers', async () => {
-      const { rootReducer } = await import(/* webpackMode: "eager" */ '../reducers')
+      const { rootReducer: reducer } = await import(/* webpackMode: "eager" */ '../reducers')
 
-      store.replaceReducer(rootReducer)
+      store.replaceReducer(reducer)
     })
   }
 

@@ -1,5 +1,5 @@
 import * as types from '../../types/media'
-import { Actions } from '../../actions/media'
+import { Actions } from '../../actions/connections'
 
 export interface State {
   error: Error | null
@@ -18,7 +18,7 @@ export const reducer = (state: State = initialState, action: Actions): State => 
         ...state,
         stream: action.payload.stream,
       }
-    case types.GET_USER_MEDIA_FAILRE:
+    case types.GET_USER_MEDIA_FAILURE:
       return {
         ...state,
         error: action.payload.error,

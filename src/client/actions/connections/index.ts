@@ -1,5 +1,3 @@
-import { Action } from 'redux'
-
 import * as types from '../../types/media'
 
 export type Actions =
@@ -24,7 +22,7 @@ export const getUserMediaSuccess = (stream: MediaStream) =>
 
 export const getUserMediaFailure = (error: Error) =>
   ({
-    type: types.GET_USER_MEDIA_FAILRE,
+    type: types.GET_USER_MEDIA_FAILURE,
     payload: {
       error,
     },

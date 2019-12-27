@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux'
 
-import { reducer as mediaReducer, State as MediaState } from './media'
+import { reducer as connectionsReducer, State as ConnectionsState } from './connections'
 
 export type State = {
-  media: MediaState
+  connections: ConnectionsState
 }
 
 export const initialState = {
-  media: mediaReducer,
+  connections: connectionsReducer,
 }
 
 export const rootReducer = combineReducers({
-  media: mediaReducer,
+  connections: connectionsReducer,
 })

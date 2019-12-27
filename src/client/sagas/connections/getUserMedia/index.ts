@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects'
-import * as actions from '../../../actions/media'
+import * as actions from '../../../actions/connections'
 
-export function* getUserMedia(action: ReturnType<typeof actions.getUserMedia>) {
+export function* getUserMedia(action: ReturnType<typeof actions.getUserMedia>): Generator {
   try {
     const { constraints } = action.payload
 

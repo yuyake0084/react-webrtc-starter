@@ -1,6 +1,6 @@
 import { all, fork } from 'redux-saga/effects'
-import { mediaProcess } from './media'
+import { connectionsProcess } from './connections'
 
-export function* rootSaga() {
-  yield all([fork(mediaProcess)])
+export function* rootSaga(): Generator {
+  yield all([fork(connectionsProcess)])
 }
