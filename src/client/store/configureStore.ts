@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware, Store } from 'redux'
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga'
-import { createBrowserHistory, createMemoryHistory } from 'history'
+// import { createBrowserHistory, createMemoryHistory } from 'history'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 
 import { rootReducer } from '@client/reducers'
 import { rootSaga } from '@client/sagas'
 
-export const history = process.env.IS_SERVER ? createMemoryHistory() : createBrowserHistory()
+// export const history = process.env.IS_SERVER ? createMemoryHistory() : createBrowserHistory()
 
 const createEnhancer = <T extends ReturnType<typeof createSagaMiddleware>>(
   sagaMiddleware: T,

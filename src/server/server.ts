@@ -13,8 +13,6 @@ export default (): void => {
   app.use(bodyParser.json())
   app.use(compression({ level: 5 }))
 
-  router(app)
-
   // HMR
   if (process.env.NODE_ENV === 'development') {
     const webpack = require('webpack')
@@ -33,6 +31,8 @@ export default (): void => {
       }),
     )
   }
+
+  router(app)
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
