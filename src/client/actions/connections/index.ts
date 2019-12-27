@@ -1,4 +1,4 @@
-import * as types from '../../types/media'
+import * as types from '@client/types/media'
 
 export type Actions =
   | ReturnType<typeof getUserMediaSuccess>

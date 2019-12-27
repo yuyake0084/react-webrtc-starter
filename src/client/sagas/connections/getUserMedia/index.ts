@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-import * as actions from '../../../actions/connections'
+import * as actions from '@client/actions/connections'
 
 export function* getUserMedia(action: ReturnType<typeof actions.getUserMedia>): Generator {
   try {

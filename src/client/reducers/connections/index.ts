@@ -1,5 +1,5 @@
-import * as types from '../../types/media'
-import { Actions } from '../../actions/connections'
+import * as types from '@client/types/media'
+import { Actions } from '@client/actions/connections'
 
 export interface State {
   error: Error | null

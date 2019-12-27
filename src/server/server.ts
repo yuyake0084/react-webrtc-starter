@@ -3,10 +3,12 @@ import express from 'express'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
 
-export default () => {
+export default (): void => {
   const app = express()
   const port = process.env.PORT || 3000
 
+  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.json())
   app.use(compression({ level: 5 }))
 
   // HMR
@@ -29,6 +31,10 @@ export default () => {
   }
 
   if (process.env.NODE_ENV !== 'test') {
-    const server = createServer()
+    const server = createServer(app)
+
+    server.listen(port, () => {
+      console.log(`Listening on ${port}!🎉`)
+    })
   }
 }

@@ -63,10 +63,12 @@
       "no-var": "error",
       "global-require": "off",
       "no-console": "off",
+      "no-shadow": "off",
       "import/prefer-default-export": "off",
       "import/extensions": "off",
       "import/no-unresolved": "off",
       "@typescript-eslint/no-use-before-define": "off",
+      "@typescript-eslint/no-var-requires": "off",
       "quotes": [
         "error",
         "single"

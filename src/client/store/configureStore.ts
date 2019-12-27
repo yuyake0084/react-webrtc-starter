@@ -3,8 +3,8 @@ import createSagaMiddleware, { SagaMiddleware } from 'redux-saga'
 import { createBrowserHistory, createMemoryHistory } from 'history'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 
-import { rootReducer } from '../reducers'
-import { rootSaga } from '../sagas'
+import { rootReducer } from '@client/reducers'
+import { rootSaga } from '@client/sagas'
 
 export const history = process.env.IS_SERVER ? createMemoryHistory() : createBrowserHistory()
 
