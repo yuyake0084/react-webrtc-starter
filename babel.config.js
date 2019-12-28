@@ -6,6 +6,8 @@ module.exports = api => {
 
   api.cache(true)
 
+  console.log('hoge')
+
   return {
     presets: [
       [
