@@ -1,5 +1,3 @@
-const { resolve } = require('path')
-
 module.exports = api => {
   const web = process.env.BABEL_ENV !== 'node'
   const isProd = process.env.NODE_ENV === 'production'
@@ -26,8 +24,8 @@ module.exports = api => {
             ['module-resolver', {
               root: ['./src'],
               alias: {
-                '@client': resolve(__dirname, './dist/server/client'),
-                '@server': resolve(__dirname, './dist/server/server'),
+                '@client': './dist/server/client',
+                '@server': './dist/server/server',
               },
             }]
           ]
