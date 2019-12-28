@@ -15,7 +15,7 @@ const base = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.IS_SERVER': JSON.stringify(false)
-    })
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx']

@@ -9,6 +9,7 @@ node_trace*
 .eslintcache
 .vscode/
 *.log
+.DS_Store
 
 .env.dev
 .env.prod
