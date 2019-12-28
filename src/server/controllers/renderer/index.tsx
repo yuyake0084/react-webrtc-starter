@@ -3,12 +3,14 @@ import * as Express from 'express'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
+import { StaticRouter } from 'react-router-dom'
 import Helmet from 'react-helmet'
 import { ServerStyleSheet } from 'styled-components'
 import { ChunkExtractor } from '@loadable/server'
 
 import { renderFullPage } from '@server/renderFullPage'
 import { configureStore } from '@client/store/configureStore'
+import { Router } from '@client/router'
 
 const statsFile = resolve(
   __dirname,
@@ -20,14 +22,17 @@ export async function get(
   res: Express.Response,
 ): Promise<Express.Response | undefined> {
   const { nonce }: { nonce: string } = res.locals
-  const { store } = configureStore()
+  const { store, runSaga } = configureStore()
   const sheet = new ServerStyleSheet()
+  const context = {}
 
   const AppComponent = () => (
     <Provider store={store}>
-      <div id="app">
-        <p>Hello!</p>
-      </div>
+      <StaticRouter location={req.url} context={context}>
+        <div id="app">
+          <Router />
+        </div>
+      </StaticRouter>
     </Provider>
   )
 
@@ -35,7 +40,9 @@ export async function get(
     const extractor = new ChunkExtractor({ statsFile })
     const tree = extractor.collectChunks(<AppComponent />)
 
-    // await runSaga()
+    // await Promise.all([
+    //   runSaga()
+    // ])
 
     const body = renderToString(tree)
     const preloadedState = JSON.stringify(store.getState())
@@ -49,6 +56,7 @@ export async function get(
 
     return res.send(renderFullPage({ meta, body, style, preloadedState, scripts, nonce }))
   } catch (e) {
+    console.error(e)
     return res.status(500).send(e.message)
   }
 }
