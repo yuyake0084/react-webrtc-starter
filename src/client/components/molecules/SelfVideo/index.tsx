@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserMedia } from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 import { Button, Video } from '@client/components/atoms'
-import { Container } from './styles'
+import { VideoMenu } from '@client/components/molecules'
+import { Container, VideoBox } from './styles'
 
 export const SelfVideo: React.FC = () => {
+  const [isMouseEnter, setMouseEnter] = React.useState(false)
   const dispatch = useDispatch()
   const { stream } = useSelector(connectionsSelector)
   const handleClick = React.useCallback(
@@ -21,32 +23,22 @@ export const SelfVideo: React.FC = () => {
     },
     [dispatch],
   )
-  const handleMouseEnter = React.useCallback(
-    (e: React.MouseEvent<HTMLVideoElement>) => {
-      e.preventDefault()
-      console.log('enter')
-    },
-    [dispatch],
-  )
-  const handleMouseLeave = React.useCallback(
-    (e: React.MouseEvent<HTMLVideoElement>) => {
-      e.preventDefault()
-      console.log('leave')
-    },
-    [dispatch],
-  )
+  const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    setMouseEnter(true)
+  }, [])
+  const handleMouseLeave = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setMouseEnter(false)
+  }, [])
 
   return (
     <Container>
       {stream ? (
-        <Video
-          autoplay
-          width={640}
-          height={360}
-          srcObject={stream}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
+        <VideoBox onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <Video autoplay width={640} height={360} srcObject={stream} />
+          {isMouseEnter && <VideoMenu />}
+        </VideoBox>
       ) : (
         <Button value="Connect!" onClick={handleClick} />
       )}

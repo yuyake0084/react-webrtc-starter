@@ -6,8 +6,6 @@ type Props = {
   width: HTMLVideoElement['width']
   height: HTMLVideoElement['height']
   srcObject: HTMLVideoElement['srcObject']
-  onMouseEnter?: (e: React.MouseEvent<HTMLVideoElement>) => void
-  onMouseLeave?: (e: React.MouseEvent<HTMLVideoElement>) => void
 }
 
 export const Video: React.FC<Props> = ({ ...props }) => {
