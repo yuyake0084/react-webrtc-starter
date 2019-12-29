@@ -21,10 +21,10 @@ module.exports = api => {
     ],
     plugins: [
       ['module-resolver', {
-        root: ['./src'],
+        root: ['.'],
         alias: {
-          '@client': resolve(__dirname, 'dist/server/client'),
-          '@server': resolve(__dirname, 'dist/server/server'),
+          '@client': './src/client',
+          '@server': './src/server',
         },
       }],
       '@babel/plugin-syntax-dynamic-import',
