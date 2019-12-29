@@ -3,9 +3,10 @@ const { resolve } = require('path')
 module.exports = api => {
   const { npm_lifecycle_event, BABEL_ENV, PWD } = process.env
   const web = BABEL_ENV !== 'node'
-  const isBuild = npm_lifecycle_event === 'build:server'
 
   api.cache(true)
+
+  console.log(__dirname)
 
   return {
     presets: [
@@ -25,8 +26,8 @@ module.exports = api => {
         root: ['./src'],
         alias: {
           // heroku's path
-          '@client': '/app/dist/server/client',
-          '@server': '/app/dist/server/server',
+          '@client': resolve(__dirname, 'dist/server/client'),
+          '@server': resolve(__dirname, 'dist/server/server'),
         },
       }],
       '@babel/plugin-syntax-dynamic-import',
