@@ -1,8 +1,12 @@
 module.exports = api => {
   const web = process.env.BABEL_ENV !== 'node'
   const isBuildServer = process.env.npm_lifecycle_event === 'build:server'
+  const pwd = process.cwd()
 
   api.cache(true)
+
+  console.log('pwd', pwd)
+  console.log('__dirname', __dirname)
 
   return {
     presets: [
@@ -24,8 +28,8 @@ module.exports = api => {
             ['module-resolver', {
               root: ['./src'],
               alias: {
-                '@client': './server/client',
-                '@server': './server/server',
+                '@client': `/${pwd}/dist/server/client`,
+                '@server': `/${pwd}/dist/server/server`,
               },
             }]
           ]
