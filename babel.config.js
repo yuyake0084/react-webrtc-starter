@@ -3,7 +3,12 @@ const { resolve } = require('path')
 module.exports = api => {
   const { npm_lifecycle_event, BABEL_ENV } = process.env
   const web = BABEL_ENV !== 'node'
-  const isBuild = npm_lifecycle_event === 'build:client' || npm_lifecycle_event === 'build:server'
+  const isBuild = npm_lifecycle_event === 'build:server'
+
+  console.log('isBuild', isBuild)
+
+  console.log('@client', resolve(__dirname, 'dist/server/client'))
+  console.log('@server', resolve(__dirname, 'dist/server/server'))
 
   api.cache(true)
 
