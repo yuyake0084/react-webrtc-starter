@@ -24,8 +24,8 @@ module.exports = api => {
             ['module-resolver', {
               root: ['./src'],
               alias: {
-                '@client': './dist/server/client',
-                '@server': './dist/server/server',
+                '@client': './client',
+                '@server': './server',
               },
             }]
           ]
