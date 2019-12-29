@@ -1,7 +1,7 @@
 const { resolve } = require('path')
 
 module.exports = api => {
-  const { npm_lifecycle_event, BABEL_ENV } = process.env
+  const { npm_lifecycle_event, BABEL_ENV, PWD } = process.env
   const web = BABEL_ENV !== 'node'
   const isBuild = npm_lifecycle_event === 'build:server'
 
@@ -27,8 +27,8 @@ module.exports = api => {
             ['module-resolver', {
               root: ['./src'],
               alias: {
-                '@client': resolve(__dirname, 'dist/server/client'),
-                '@server': resolve(__dirname, 'dist/server/server'),
+                '@client': resolve(PWD, 'dist/server/client'),
+                '@server': resolve(PWD, 'dist/server/server'),
               },
             }]
           ]
