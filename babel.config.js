@@ -7,6 +7,8 @@ module.exports = api => {
 
   api.cache(true)
 
+  console.log('PWD', PWD)
+
   return {
     presets: [
       [
@@ -21,19 +23,13 @@ module.exports = api => {
       '@babel/preset-react'
     ],
     plugins: [
-      ...(
-        isBuild
-          ? [
-            ['module-resolver', {
-              root: ['./src'],
-              alias: {
-                '@client': resolve(PWD, 'dist/server/client'),
-                '@server': resolve(PWD, 'dist/server/server'),
-              },
-            }]
-          ]
-          : []
-      ),
+      ['module-resolver', {
+        root: ['./src'],
+        alias: {
+          '@client': resolve(PWD, 'dist/server/client'),
+          '@server': resolve(PWD, 'dist/server/server'),
+        },
+      }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
       '@babel/plugin-proposal-object-rest-spread',
