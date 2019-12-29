@@ -6,9 +6,6 @@ module.exports = api => {
 
   api.cache(true)
 
-  console.log(process.env)
-  console.log('resolve', resolve(__dirname, 'dist/server/client'))
-
   return {
     presets: [
       [
