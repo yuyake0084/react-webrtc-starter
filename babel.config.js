@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { resolve, join } = require('path')
 
 module.exports = api => {
   const { npm_lifecycle_event, BABEL_ENV, PWD } = process.env
@@ -6,7 +6,8 @@ module.exports = api => {
 
   api.cache(true)
 
-  console.log(__dirname)
+  console.log('resolve', resolve(__dirname, 'dist/server/client'))
+  console.log('join', join(__dirname, 'dist/server/client'))
 
   return {
     presets: [
@@ -25,7 +26,6 @@ module.exports = api => {
       ['module-resolver', {
         root: ['./src'],
         alias: {
-          // heroku's path
           '@client': resolve(__dirname, 'dist/server/client'),
           '@server': resolve(__dirname, 'dist/server/server'),
         },
