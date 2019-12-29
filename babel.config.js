@@ -1,12 +1,11 @@
+const { resolve } = require('path')
+
 module.exports = api => {
-  const web = process.env.BABEL_ENV !== 'node'
-  const isBuildServer = process.env.npm_lifecycle_event === 'build:server'
-  const pwd = process.cwd()
+  const { npm_lifecycle_event, BABEL_ENV } = process.env
+  const web = BABEL_ENV !== 'node'
+  const isBuild = npm_lifecycle_event === 'build:client' || npm_lifecycle_event === 'build:server'
 
   api.cache(true)
-
-  console.log('pwd', pwd)
-  console.log('__dirname', __dirname)
 
   return {
     presets: [
@@ -23,13 +22,13 @@ module.exports = api => {
     ],
     plugins: [
       ...(
-        isBuildServer
+        isBuild
           ? [
             ['module-resolver', {
               root: ['./src'],
               alias: {
-                '@client': `/${pwd}/dist/server/client`,
-                '@server': `/${pwd}/dist/server/server`,
+                '@client': resolve(__dirname, 'dist/server/client'),
+                '@server': resolve(__dirname, 'dist/server/server'),
               },
             }]
           ]
