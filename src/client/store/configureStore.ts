@@ -29,8 +29,8 @@ export const configureStore = (preloadedState: Record<string, any> = {}): any =>
   }
 
   if (module.hot) {
-    module.hot.accept('../reducers', async () => {
-      const { rootReducer: reducer } = await import(/* webpackMode: "eager" */ '../reducers')
+    module.hot.accept('@client/reducers', async () => {
+      const { rootReducer: reducer } = await import(/* webpackMode: "eager" */ '@client/reducers')
 
       store.replaceReducer(reducer)
     })

@@ -4,11 +4,22 @@
     "outDir": "./dist",
     "declaration": false,
     "jsx": "react",
-    "lib": ["es2018", "dom"],
-    "types": ["react", "jest", "webpack-env"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "types": [
+      "react",
+      "jest",
+      "webpack-env"
+    ],
     "paths": {
-      "@client*": ["src/client/*"],
-      "@server*": ["src/server/*"]
+      "@client*": [
+        "src/client/*"
+      ],
+      "@server*": [
+        "src/server/*"
+      ]
     },
     "module": "commonjs",
     "moduleResolution": "node",
@@ -30,5 +41,7 @@
     "src/**/*.test.tsx",
     "src/client/**/*.stories.ts"
   ],
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

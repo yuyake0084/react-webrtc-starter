@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "paths": {
+      "@client*": [
+        "dist/server/client/*"
+      ],
+      "@server*": [
+        "dist/server/server/*"
+      ]
+    },
+    "noImplicitAny": false
+  }
+}

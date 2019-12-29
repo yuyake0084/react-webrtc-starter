@@ -12,7 +12,7 @@
     "start:serverless": "cross-env NODE_ENV=production netlify-lambda serve ./dist/server/functions",
     "start:storybook": "start-storybook -p 6006",
     "build": "npm run rm:dist && run-p build:client build:server",
-    "build:server": "cross-env NODE_ENV=production BABEL_ENV=node babel ./src -d ./dist/server --extensions '.ts,.tsx'",
+    "build:server": "cross-env NODE_ENV=production BABEL_ENV=node tsc --project ./tsconfig.prod.json",
     "build:client": "cross-env NODE_ENV=production webpack --config ./tools/webpack/client.config.js",
     "build:storybook": "build-storybook",
     "now-build": "npm run build && mv dist public",
