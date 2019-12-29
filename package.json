@@ -223,5 +223,8 @@
     "styled-components": "4.4.1",
     "ua-parser-js": "0.7.21",
     "webpack": "^4.41.5"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
