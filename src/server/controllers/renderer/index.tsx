@@ -14,7 +14,7 @@ import { Router } from '@client/router'
 
 const statsFile = resolve(
   __dirname,
-  process.env.NODE_ENV !== 'production' ? '../../../../dist/client/loadable-stats.json' : '',
+  process.env.NODE_ENV !== 'production' ? '../../../../client/loadable-stats.json' : '',
 )
 
 export async function get(

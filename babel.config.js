@@ -5,11 +5,6 @@ module.exports = api => {
   const web = BABEL_ENV !== 'node'
   const isBuild = npm_lifecycle_event === 'build:server'
 
-  console.log('isBuild', isBuild)
-
-  console.log('@client', resolve(__dirname, 'dist/server/client'))
-  console.log('@server', resolve(__dirname, 'dist/server/server'))
-
   api.cache(true)
 
   return {
