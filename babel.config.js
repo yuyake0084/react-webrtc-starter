@@ -7,8 +7,6 @@ module.exports = api => {
 
   api.cache(true)
 
-  console.log('PWD', PWD)
-
   return {
     presets: [
       [
@@ -26,8 +24,9 @@ module.exports = api => {
       ['module-resolver', {
         root: ['./src'],
         alias: {
-          '@client': resolve(PWD, 'dist/server/client'),
-          '@server': resolve(PWD, 'dist/server/server'),
+          // heroku's path
+          '@client': '/app/dist/server/client',
+          '@server': '/app/dist/server/server',
         },
       }],
       '@babel/plugin-syntax-dynamic-import',
