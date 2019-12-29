@@ -1,6 +1,6 @@
 module.exports = api => {
   const web = process.env.BABEL_ENV !== 'node'
-  const isProd = process.env.NODE_ENV === 'production'
+  const isBuildServer = process.env.npm_lifecycle_event === 'build:server'
 
   api.cache(true)
 
@@ -19,7 +19,7 @@ module.exports = api => {
     ],
     plugins: [
       ...(
-        isProd
+        isBuildServer
           ? [
             ['module-resolver', {
               root: ['./src'],
