@@ -1,13 +1,13 @@
-const { resolve, join } = require('path')
+const { resolve } = require('path')
 
 module.exports = api => {
-  const { npm_lifecycle_event, BABEL_ENV, PWD } = process.env
+  const { BABEL_ENVD } = process.env
   const web = BABEL_ENV !== 'node'
 
   api.cache(true)
 
+  console.log(processs.env)
   console.log('resolve', resolve(__dirname, 'dist/server/client'))
-  console.log('join', join(__dirname, 'dist/server/client'))
 
   return {
     presets: [
