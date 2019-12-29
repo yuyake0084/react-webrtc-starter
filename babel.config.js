@@ -1,7 +1,7 @@
 const { resolve } = require('path')
 
 module.exports = api => {
-  const { BABEL_ENVD } = process.env
+  const { BABEL_ENV } = process.env
   const web = BABEL_ENV !== 'node'
 
   api.cache(true)
