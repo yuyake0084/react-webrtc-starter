@@ -8,7 +8,7 @@
     "test": "jest",
     "type-check": "tsc --noEmit",
     "start": "ts-node-dev -r tsconfig-paths/register ./src/server/index.ts",
-    "start:prod": "cross-env NODE_ENV=production forever start ./dist/server/server/index.js",
+    "start:prod": "node ./dist/server/server/index.js",
     "start:serverless": "cross-env NODE_ENV=production netlify-lambda serve ./dist/server/functions",
     "start:storybook": "start-storybook -p 6006",
     "build": "npm run rm:dist && run-p build:client build:server",
@@ -225,6 +225,6 @@
     "webpack": "^4.41.5"
   },
   "engines": {
-    "node": "10.x"
+    "node": "10.16"
   }
 }
