@@ -8,10 +8,14 @@ config({
   path: isProd ? join(__dirname, '../../.env.prod') : join(__dirname, '../../.env.dev'),
 })
 
-if (isProd) {
-} else {
-  runServer()
-}
+console.log(isProd)
+
+runServer()
+
+// if (isProd) {
+// } else {
+//   runServer()
+// }
 
 process.on('uncaughtException', err => {
   console.error(err)
