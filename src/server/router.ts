@@ -1,7 +1,7 @@
 import * as Express from 'express'
 import * as renderer from './controllers/renderer'
 
-export default function router(app: Express.Application) {
+export const router = (app: Express.Application) => {
   app.use('/favicon.ico', (req, res) => res.status(200).send())
   app.use('/robots.txt', Express.static('dist/client/robots.txt'))
 

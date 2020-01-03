@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserMedia } from '@client/actions/connections'
+import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 import { Button, Video } from '@client/components/atoms'
 import { VideoMenu } from '@client/components/molecules'
@@ -15,7 +15,7 @@ export const SelfVideo: React.FC = () => {
       e.preventDefault()
 
       dispatch(
-        getUserMedia({
+        connectionsAction.getUserMedia({
           video: true,
           audio: true,
         }),
@@ -31,6 +31,12 @@ export const SelfVideo: React.FC = () => {
     e.preventDefault()
     setMouseEnter(false)
   }, [])
+
+  React.useEffect(() => {
+    if (stream) {
+      dispatch(connectionsAction.connectSocket())
+    }
+  }, [stream])
 
   return (
     <Container>

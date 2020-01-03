@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { join } from 'path'
 import { cpus } from 'os'
 import cluster from 'cluster'
-import runServer from './server'
+import { runServer } from './server'
 
 const isProd = process.env.NODE_ENV === 'production'
 

@@ -12,9 +12,13 @@ const base = {
   output: {
     path: resolve('dist', 'client'),
   },
+  watch: true,
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.IS_SERVER': JSON.stringify(false)
+      'process.env': {
+        IS_SERVER: JSON.stringify(false),
+        DOMAIN: JSON.stringify(process.env.DOMAIN)
+      }
     }),
   ],
   resolve: {

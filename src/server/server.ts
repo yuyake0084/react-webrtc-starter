@@ -3,9 +3,10 @@ import express from 'express'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
 
-import router from './router'
+import { router } from './router'
+import { connectSocket } from './socket'
 
-export default (): void => {
+export const runServer = (): void => {
   const app = express()
   const port = process.env.PORT || 3000
 
@@ -37,11 +38,11 @@ export default (): void => {
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
 
-    console.log('PORT!!!!!!!!!!!!!!!!!!!', port)
-
     server.listen(port, () => {
       console.log(`Listening on ${port}!🎉`)
     })
+
+    connectSocket(server)
 
     server.on('error', (err: NodeJS.ErrnoException) => {
       if (err.syscall !== 'listen') throw err
