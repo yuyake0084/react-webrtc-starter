@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "start": "ts-node-dev -r tsconfig-paths/register --ignore-watch node_modules ./src/server/index.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register --ignore-watch node_modules --ignore-watch src/client ./src/server/index.ts",
     "start:prod": "cross-env NODE_ENV=production node ./dist/server/server/index.js",
     "start:serverless": "cross-env NODE_ENV=production netlify-lambda serve ./dist/server/functions",
     "start:storybook": "start-storybook -p 6006",

@@ -5,5 +5,6 @@ declare interface Window {
 declare interface Process extends NodeJS.Process {
   env: {
     DOMAIN: string
+    IS_BROWSER: 'true' | undefined
   }
 }

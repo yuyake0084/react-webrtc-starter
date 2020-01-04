@@ -4,7 +4,7 @@ import { Actions } from '@client/actions/connections'
 export interface State {
   isConnecting: boolean
   error: Error | null
-  peerConnection: RTCPeerConnection | null
+  pc: RTCPeerConnection | null
   stream: MediaStream | null
   streams: MediaStream[]
 }
@@ -12,7 +12,7 @@ export interface State {
 export const initialState = {
   isConnecting: false,
   error: null,
-  peerConnection: null,
+  pc: null,
   stream: null,
   streams: [],
 }
@@ -27,7 +27,7 @@ export const reducer = (state: State = initialState, action: Actions): State => 
     case types.CONNECT_SOCKET_SUCCESS:
       return {
         ...state,
-        peerConnection: action.payload.peerConnection,
+        pc: action.payload.pc,
       }
     case types.GET_USER_MEDIA_FAILURE:
     case types.CONNECT_SOCKET_FAILURE:

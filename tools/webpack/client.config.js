@@ -16,7 +16,7 @@ const base = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        IS_SERVER: JSON.stringify(false),
+        IS_BROWSER: JSON.stringify(true),
         DOMAIN: JSON.stringify(process.env.DOMAIN)
       }
     }),

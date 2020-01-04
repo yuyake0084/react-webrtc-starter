@@ -36,11 +36,11 @@ export const connectSocket = () =>
     type: types.CONNECT_SOCKET,
   } as const)
 
-export const connectSocketSuccess = (peerConnection: RTCPeerConnection) =>
+export const connectSocketSuccess = (pc: RTCPeerConnection) =>
   ({
     type: types.CONNECT_SOCKET_SUCCESS,
     payload: {
-      peerConnection,
+      pc,
     },
   } as const)
 
