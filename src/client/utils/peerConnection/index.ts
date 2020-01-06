@@ -37,8 +37,11 @@ class PeerConnection {
     return this.pc
   }
 
-  public addTrack = (stream: MediaStream) => {
-    stream.getTracks().forEach(track => this.pc.addTrack(track, stream))
+  public addTrack = (stream: MediaStream): void => {
+    if (this.pc) {
+      console.log(stream)
+      stream.getTracks().forEach(track => this.pc.addTrack(track, stream))
+    }
   }
 
   private handleSocketMessage = () => {
@@ -81,8 +84,17 @@ class PeerConnection {
     })
   }
 
-  private handleTrack = (e: any) => {
-    console.log(e)
+  private handleTrack = (e: RTCTrackEvent): void => {
+    console.log('handleTrack')
+    const [stream] = e.streams
+
+    console.log(stream)
+    const video = document.createElement('video')
+
+    document.body.appendChild(video)
+
+    video.srcObject = stream
+    video.play()
   }
 
   /**
@@ -90,12 +102,12 @@ class PeerConnection {
    */
   private handleNegotiationneeded = async (e: Event) => {
     try {
-      console.log('negotiationneeded')
-
       if (this.isNegotiationNeeded) {
         const offer = await this.pc.createOffer()
 
+        console.log('negotiationneeded')
         await this.pc.setLocalDescription(offer)
+        this.sendSDP(offer)
         this.isNegotiationNeeded = false
       }
     } catch (e) {
@@ -122,6 +134,12 @@ class PeerConnection {
     })
 
     this.socket.emit(types.CANDIDATE, data)
+  }
+
+  private sendSDP = (sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {
+    const data = JSON.stringify(sessionDescription)
+    console.log(sessionDescription.type)
+    this.socket.emit(sessionDescription.type, data)
   }
 
   // public connect = (isOffer: boolean): RTCPeerConnection => {

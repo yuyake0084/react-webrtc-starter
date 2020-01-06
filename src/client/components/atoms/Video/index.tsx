@@ -15,7 +15,7 @@ export const Video: React.FC<Props> = ({ ...props }) => {
   React.useEffect(() => {
     const video = videoRef?.current
 
-    if (video) {
+    if (video && srcObject !== null) {
       video.srcObject = srcObject
       video.play()
     }
