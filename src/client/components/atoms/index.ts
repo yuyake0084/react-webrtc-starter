@@ -1,4 +1,5 @@
 export * from './Button'
 export * from './Head'
 export * from './Input'
+export * from './Main'
 export * from './Video'

@@ -40,9 +40,11 @@ export const CreateRoomForm: React.FC = () => {
       <Form onSubmit={handleSubmit}>
         <Input
           name="roomId"
+          type="text"
           value={value}
           placeholder="Please input room name"
           required
+          autocomplete="none"
           onChange={handleChange}
         />
         <ButtonBox>

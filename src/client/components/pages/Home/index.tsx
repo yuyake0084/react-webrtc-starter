@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
 // actions
@@ -11,15 +10,8 @@ import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 
 // components
-import { Head } from '@client/components/atoms'
+import { Head, Main } from '@client/components/atoms'
 import { CreateRoomForm } from '@client/components/organisms'
-
-const Box = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`
 
 export const Home: React.FC = () => {
   const { roomId, stream } = useSelector(connectionsSelector)
@@ -39,13 +31,13 @@ export const Home: React.FC = () => {
   return (
     <>
       {roomId && stream ? (
-        <Redirect to={roomId} />
+        <Redirect to={`/${roomId}`} />
       ) : (
         <>
           <Head title="Home" />
-          <Box>
+          <Main>
             <CreateRoomForm />
-          </Box>
+          </Main>
         </>
       )}
     </>

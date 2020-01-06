@@ -16,15 +16,18 @@ const InputComponent = styled.input`
 
   &::placeholder {
     color: #aaa;
+    background-color: transparent;
     letter-spacing: 2px;
   }
 `
 
 type Props = {
   name: HTMLInputElement['name']
+  type: HTMLInputElement['type']
   value: HTMLInputElement['value']
   placeholder: HTMLInputElement['placeholder']
   required: HTMLInputElement['required']
+  autocomplete?: HTMLInputElement['autocomplete']
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 

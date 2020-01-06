@@ -15,6 +15,7 @@ const Link = styled(RouterLink)`
 
 const Img = styled.img`
   width: 40px;
+  height: 40px;
 `
 
 const Heading = styled.h1`

@@ -1,5 +1,14 @@
 import * as React from 'react'
-import { Wrapper, VideoComponent } from './styles'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  border-radius: 14px;
+  background-color: #000;
+`
+
+const VideoComponent = styled.video`
+  vertical-align: bottom;
+`
 
 type Props = {
   autoplay?: HTMLVideoElement['autoplay']
