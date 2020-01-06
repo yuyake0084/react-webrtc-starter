@@ -5,6 +5,7 @@ export interface State {
   isConnecting: boolean
   error: Error | null
   pc: RTCPeerConnection | null
+  roomId: string | null
   stream: MediaStream | null
   streams: MediaStream[]
 }
@@ -13,6 +14,7 @@ export const initialState = {
   isConnecting: false,
   error: null,
   pc: null,
+  roomId: null,
   stream: null,
   streams: [],
 }
@@ -27,7 +29,7 @@ export const reducer = (state: State = initialState, action: Actions): State => 
     case types.CONNECT_SOCKET_SUCCESS:
       return {
         ...state,
-        pc: action.payload.pc,
+        roomId: action.payload.roomId,
       }
     case types.GET_USER_MEDIA_FAILURE:
     case types.CONNECT_SOCKET_FAILURE:

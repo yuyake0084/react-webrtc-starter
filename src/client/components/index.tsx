@@ -4,14 +4,23 @@ import { Header } from '@client/components/organisms'
 
 export const GlobalStyle = createGlobalStyle`
   html, body {
-    height: 100%;
     font-size: 12px;
     font-family: 'Nunito', sans-serif;
     background-color: #32393e;
   }
+
+  html, body, #app {
+    height: 100%;
+  }
+
+  a {
+    text-decoration: none;
+  }
 `
 
-const Container = styled.div``
+const Container = styled.div`
+  height: 100%;
+`
 
 export const App: React.FC = ({ children }) => (
   <Container>

@@ -1,4 +1,5 @@
 import * as types from '@client/types/connections'
+import { State } from '@client/reducers/connections'
 
 export type Actions =
   | ReturnType<typeof getUserMediaSuccess>
@@ -31,16 +32,19 @@ export const getUserMediaFailure = (error: Error) =>
     },
   } as const)
 
-export const connectSocket = () =>
+export const connectSocket = (roomId: string) =>
   ({
     type: types.CONNECT_SOCKET,
+    payload: {
+      roomId,
+    },
   } as const)
 
-export const connectSocketSuccess = (pc: RTCPeerConnection) =>
+export const connectSocketSuccess = (roomId: State['roomId']) =>
   ({
     type: types.CONNECT_SOCKET_SUCCESS,
     payload: {
-      pc,
+      roomId,
     },
   } as const)
 

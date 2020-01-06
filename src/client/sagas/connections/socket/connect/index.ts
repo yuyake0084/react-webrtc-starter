@@ -1,19 +1,26 @@
+import io from 'socket.io-client'
 import { put, call, select } from 'redux-saga/effects'
 import { State } from '@client/reducers'
 import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
+import * as connectionTypes from '@client/utils/connectionTypes'
 
-export function* connectSocket() {
+export function* connectSocket(action: ReturnType<typeof connectionsAction.connectSocket>) {
   try {
-    const { stream }: State['connections'] = yield select(connectionsSelector)
+    const { roomId } = action.payload
+    const socket = io(process.env.DOMAIN as any)
 
-    if (process.env.IS_BROWSER && stream) {
-      const { peerConnection } = require('@client/utils/peerConnection')
-      const pc = peerConnection.connect(true)
+    socket.on('connect', (e: any) => {
+      socket.emit(connectionTypes.JOIN, { roomId })
+    })
 
-      peerConnection.addTrack(stream)
-      yield put(connectionsAction.connectSocketSuccess(pc))
-    }
+    socket.on('message', () => {
+      socket.on(connectionTypes.JOIN, ({ roomId }: any) => {
+        console.log(roomId)
+      })
+    })
+
+    yield put(connectionsAction.connectSocketSuccess(roomId))
   } catch (e) {
     yield put(connectionsAction.connectSocketFailure(e))
   }

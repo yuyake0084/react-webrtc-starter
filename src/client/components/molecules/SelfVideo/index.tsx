@@ -34,7 +34,7 @@ export const SelfVideo: React.FC = () => {
 
   React.useEffect(() => {
     if (stream) {
-      dispatch(connectionsAction.connectSocket())
+      // dispatch(connectionsAction.connectSocket())
     }
   }, [stream])
 
