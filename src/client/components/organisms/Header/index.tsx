@@ -15,7 +15,7 @@ export const Img = styled.img`
 
 export const Heading = styled.h1`
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
 `
 

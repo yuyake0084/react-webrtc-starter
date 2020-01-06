@@ -27,6 +27,7 @@ export const renderFullPage = ({ meta, body, style, preloadedState, nonce, scrip
       ${meta}
       <link rel="manifest" href="/manifest.webmanifest" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" />
+      <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
       ${style}
     </head>
     <body>

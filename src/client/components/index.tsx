@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     height: 100%;
     font-size: 12px;
+    font-family: 'Nunito', sans-serif;
     background-color: #32393e;
   }
 `
