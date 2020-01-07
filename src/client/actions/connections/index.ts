@@ -2,10 +2,13 @@ import * as types from '@client/types/connections'
 import { State } from '@client/reducers/connections'
 
 export type Actions =
+  | ReturnType<typeof getUserMedia>
   | ReturnType<typeof getUserMediaSuccess>
   | ReturnType<typeof getUserMediaFailure>
+  | ReturnType<typeof connectSocket>
   | ReturnType<typeof connectSocketSuccess>
   | ReturnType<typeof connectSocketFailure>
+  | ReturnType<typeof connectRTCPeerConnection>
   | ReturnType<typeof addStream>
 
 export const getUserMedia = (constraints: MediaStreamConstraints) =>
@@ -54,6 +57,11 @@ export const connectSocketFailure = (error: Error) =>
     payload: {
       error,
     },
+  } as const)
+
+export const connectRTCPeerConnection = () =>
+  ({
+    type: types.CONNECT_RTC_PEER_CONNECTION,
   } as const)
 
 export const addStream = (stream: MediaStream) =>

@@ -4,9 +4,15 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   border-radius: 14px;
   background-color: #000;
+
+  ${({ width, height }: Pick<Props, 'width' | 'height'>) => `
+    max-width: ${width}px;
+    max-height: ${height}px;
+  `}
 `
 
 const VideoComponent = styled.video`
+  width: 100%;
   border-radius: 14px;
   vertical-align: bottom;
 `
@@ -18,8 +24,7 @@ type Props = {
   srcObject: HTMLVideoElement['srcObject']
 }
 
-export const Video: React.FC<Props> = ({ ...props }) => {
-  const { srcObject } = { ...props }
+export const Video: React.FC<Props> = ({ width, height, srcObject, ...rest }) => {
   const videoRef = React.createRef<HTMLVideoElement>()
 
   React.useEffect(() => {
@@ -32,8 +37,8 @@ export const Video: React.FC<Props> = ({ ...props }) => {
   }, [srcObject])
 
   return (
-    <Wrapper>
-      <VideoComponent ref={videoRef} {...props} />
+    <Wrapper width={width} height={height}>
+      <VideoComponent ref={videoRef} {...rest} />
     </Wrapper>
   )
 }
