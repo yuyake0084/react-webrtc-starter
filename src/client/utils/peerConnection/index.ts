@@ -1,20 +1,20 @@
 import { put } from 'redux-saga/effects'
-import io from 'socket.io-client'
 import * as connectionsAction from '@client/actions/connections'
+import { socket } from '@client/utils/socket'
 import * as types from '@client/utils/connectionTypes'
 
 class PeerConnection {
   private socket: any
-  private pc: RTCPeerConnection
+  private pc: null | RTCPeerConnection
   private isNegotiationNeeded: boolean
 
   constructor() {
-    this.socket = io(process.env.DOMAIN as string)
-    this.pc = new RTCPeerConnection()
+    this.socket = socket.connect()
+    this.pc = null
     this.isNegotiationNeeded = true
   }
 
-  public connect = (isOffer: boolean): RTCPeerConnection => {
+  public connect = (stream: MediaStream): RTCPeerConnection => {
     const config = {
       iceServers: [
         {
@@ -28,31 +28,26 @@ class PeerConnection {
 
     this.pc.addEventListener('track', this.handleTrack)
     this.pc.addEventListener('icecandidate', this.handleIcecandidate)
-
-    if (isOffer) {
-      this.pc.addEventListener('negotiationneeded', this.handleNegotiationneeded)
-    }
+    this.pc.addEventListener('negotiationneeded', this.handleNegotiationneeded)
+    this.addTrack(stream)
     this.handleSocketMessage()
 
     return this.pc
   }
 
-  public addTrack = (stream: MediaStream): void => {
-    if (this.pc) {
-      console.log(stream)
-      stream.getTracks().forEach(track => this.pc.addTrack(track, stream))
-    }
+  private addTrack = (stream: MediaStream): void => {
+    stream.getTracks().forEach(track => this.pc?.addTrack(track, stream))
   }
 
   private handleSocketMessage = () => {
-    this.socket.on(types.OFFER, async (data: string) => {
+    socket.listenCall(async (data: string) => {
       const offer = new RTCSessionDescription(JSON.parse(data))
 
       try {
         console.log('Received offer ...')
 
-        this.connect(false)
-        await this.pc.setRemoteDescription(offer)
+        // this.connect()
+        await this.pc?.setRemoteDescription(offer)
       } catch (e) {
         console.error(e)
       }
@@ -64,7 +59,7 @@ class PeerConnection {
 
       try {
         console.log('Received answer ...')
-        await this.pc.setRemoteDescription(answer)
+        await this.pc?.setRemoteDescription(answer)
       } catch (e) {
         console.log(e)
       }
@@ -77,9 +72,9 @@ class PeerConnection {
       console.log('Received candidate ...')
 
       // MEMO: addIceCandidateはsetRemoteDescriptionを実行してからでないと動作しない
-      this.pc.addIceCandidate(candidate).catch(() => {
+      this.pc?.addIceCandidate(candidate).catch(() => {
         console.log('unresolved setRemoteDescription')
-        this.pc.setRemoteDescription(sdp)
+        this.pc?.setRemoteDescription(sdp)
       })
     })
   }
@@ -103,11 +98,15 @@ class PeerConnection {
   private handleNegotiationneeded = async (e: Event) => {
     try {
       if (this.isNegotiationNeeded) {
-        const offer = await this.pc.createOffer()
+        const offer = await this.pc?.createOffer()
 
         console.log('negotiationneeded')
-        await this.pc.setLocalDescription(offer)
-        this.sendSDP(offer)
+
+        if (offer) {
+          await this.pc?.setLocalDescription(offer)
+          this.sendSDP(offer)
+        }
+
         this.isNegotiationNeeded = false
       }
     } catch (e) {
@@ -122,7 +121,7 @@ class PeerConnection {
     console.log('handleIcecandidate')
     if (!!e.candidate) {
       this.sendIceCandidate(e.candidate)
-    } else if (this.pc.localDescription) {
+    } else if (this.pc?.localDescription) {
       // this.sendSDP(this.pc.localDescription)
     }
   }
@@ -137,9 +136,7 @@ class PeerConnection {
   }
 
   private sendSDP = (sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {
-    const data = JSON.stringify(sessionDescription)
-    console.log(sessionDescription.type)
-    this.socket.emit(sessionDescription.type, data)
+    this.socket.emit(sessionDescription.type, sessionDescription)
   }
 
   // public connect = (isOffer: boolean): RTCPeerConnection => {

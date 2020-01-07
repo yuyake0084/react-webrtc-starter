@@ -22,7 +22,7 @@ export const Home: React.FC = () => {
       dispatch(
         connectionsAction.getUserMedia({
           video: true,
-          audio: true,
+          audio: false,
         }),
       )
     }

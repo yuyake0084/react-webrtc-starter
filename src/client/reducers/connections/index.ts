@@ -26,22 +26,32 @@ export const reducer = (state: State = initialState, action: Actions): State => 
         ...state,
         stream: action.payload.stream,
       }
+
     case types.CONNECT_SOCKET_SUCCESS:
       return {
         ...state,
         roomId: action.payload.roomId,
       }
+
+    case types.CONNECT_ROOM_SUCCESS:
+      return {
+        ...state,
+        pc: action.payload.pc,
+      }
+
     case types.GET_USER_MEDIA_FAILURE:
     case types.CONNECT_SOCKET_FAILURE:
       return {
         ...state,
         error: action.payload.error,
       }
+
     case types.ADD_STREAM:
       return {
         ...state,
         streams: [...state.streams, action.payload.stream],
       }
+
     default:
       return state
   }

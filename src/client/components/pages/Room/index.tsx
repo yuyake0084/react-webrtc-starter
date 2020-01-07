@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, useParams } from 'react-router-dom'
+import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 import { Head, Main } from '@client/components/atoms'
 import { SelfVideo } from '@client/components/molecules'
@@ -8,10 +9,21 @@ import { SelfVideo } from '@client/components/molecules'
 export const Room: React.FC = () => {
   const { roomId } = useParams()
   const [isEnded, setIsEnded] = React.useState(false)
-  const { stream, streams } = useSelector(connectionsSelector)
+  const { pc, stream, streams } = useSelector(connectionsSelector)
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
-    if (!stream && !streams.length) {
+    if (roomId && stream === null) {
+      dispatch(connectionsAction.callRoom(roomId))
+    }
+  }, [])
+
+  React.useEffect(() => {
+    if (stream) {
+      dispatch(connectionsAction.connectRoom())
+    }
+
+    if (pc && !stream && !streams.length) {
       setIsEnded(true)
     }
   }, [stream, streams])

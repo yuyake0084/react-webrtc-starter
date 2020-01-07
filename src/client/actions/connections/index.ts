@@ -8,7 +8,10 @@ export type Actions =
   | ReturnType<typeof connectSocket>
   | ReturnType<typeof connectSocketSuccess>
   | ReturnType<typeof connectSocketFailure>
-  | ReturnType<typeof connectRTCPeerConnection>
+  | ReturnType<typeof connectRoom>
+  | ReturnType<typeof connectRoomSuccess>
+  | ReturnType<typeof connectRoomFailure>
+  | ReturnType<typeof callRoom>
   | ReturnType<typeof addStream>
 
 export const getUserMedia = (constraints: MediaStreamConstraints) =>
@@ -59,9 +62,47 @@ export const connectSocketFailure = (error: Error) =>
     },
   } as const)
 
-export const connectRTCPeerConnection = () =>
+export const connectRoom = () =>
   ({
-    type: types.CONNECT_RTC_PEER_CONNECTION,
+    type: types.CONNECT_ROOM,
+  } as const)
+
+export const connectRoomSuccess = (pc: RTCPeerConnection) =>
+  ({
+    type: types.CONNECT_ROOM_SUCCESS,
+    payload: {
+      pc,
+    },
+  } as const)
+
+export const connectRoomFailure = (error: Error) =>
+  ({
+    type: types.CONNECT_ROOM_FAILURE,
+    payload: {
+      error,
+    },
+  } as const)
+
+export const callRoom = (roomId: string) =>
+  ({
+    type: types.CALL_ROOM,
+    payload: {
+      roomId,
+    },
+  } as const)
+
+export const callRoomSuccess = () =>
+  ({
+    type: types.CALL_ROOM_SUCCESS,
+    payload: {},
+  } as const)
+
+export const callRoomFailure = (error: Error) =>
+  ({
+    type: types.CALL_ROOM_FAILURE,
+    payload: {
+      error,
+    },
   } as const)
 
 export const addStream = (stream: MediaStream) =>

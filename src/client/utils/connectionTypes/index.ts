@@ -1,4 +1,5 @@
 export const JOIN = 'join'
+export const CALL = 'call'
 export const OFFER = 'offer'
 export const ANSWER = 'answer'
 export const CANDIDATE = 'candidate'
