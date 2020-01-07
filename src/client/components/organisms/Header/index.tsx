@@ -1,8 +1,12 @@
 import * as React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import styled from 'styled-components'
+import { HeaderMenu } from '@client/components/molecules'
 
-const HeaderCoponent = styled.header`
+const HeaderComponent = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px 20px;
   background-color: #5cd7da;
 `
@@ -25,10 +29,11 @@ const Heading = styled.h1`
 `
 
 export const Header = () => (
-  <HeaderCoponent>
+  <HeaderComponent>
     <Link to="/">
       <Img src="https://cloud.soba-project.com/images/webrtclogo.png" alt="WebRTC" />
       <Heading>React with WebRTC</Heading>
     </Link>
-  </HeaderCoponent>
+    <HeaderMenu />
+  </HeaderComponent>
 )

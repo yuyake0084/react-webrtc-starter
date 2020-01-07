@@ -1,5 +1,6 @@
 export * from './Button'
 export * from './Head'
+export * from './Icon'
 export * from './Input'
 export * from './Main'
 export * from './Video'

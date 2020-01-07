@@ -7,6 +7,7 @@ const Wrapper = styled.div`
 `
 
 const VideoComponent = styled.video`
+  border-radius: 14px;
   vertical-align: bottom;
 `
 
