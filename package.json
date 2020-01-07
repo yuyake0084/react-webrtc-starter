@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "start": "ts-node-dev -r tsconfig-paths/register --ignore-watch node_modules --ignore-watch src/client ./src/server/index.ts",
+    "start": "node --max_old_space_size=2048 --gc_interval=100 node_modules/nodemon/bin/nodemon.js",
     "start:prod": "cross-env NODE_ENV=production node ./dist/server/server/index.js",
     "start:serverless": "cross-env NODE_ENV=production netlify-lambda serve ./dist/server/functions",
     "start:storybook": "start-storybook -p 6006",
@@ -36,6 +36,16 @@
       "npx prettier --write",
       "git add"
     ]
+  },
+  "nodemonConfig": {
+    "watch": [
+      "./src/server/**/*"
+    ],
+    "ignore": [
+      "./src/client/**/*"
+    ],
+    "ext": "ts",
+    "exec": "ts-node -r tsconfig-paths/register ./src/server/index.ts"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -170,6 +180,7 @@
     "husky": "3.1.0",
     "jest": "24.9.0",
     "lint-staged": "9.5.0",
+    "nodemon": "^2.0.2",
     "prettier": "1.19.1",
     "react-test-renderer": "16.12.0",
     "redux-saga-test-plan": "4.0.0-rc.3",
@@ -177,7 +188,7 @@
     "robotstxt-webpack-plugin": "7.0.0",
     "supertest": "4.0.2",
     "ts-loader": "^6.2.1",
-    "ts-node-dev": "^1.0.0-pre.44",
+    "ts-node": "^8.5.4",
     "tsconfig-paths": "^3.9.0",
     "typescript": "3.7.4",
     "webpack-bundle-analyzer": "3.6.0",
