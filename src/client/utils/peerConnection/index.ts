@@ -6,15 +6,17 @@ import * as types from '@client/utils/connectionTypes'
 class PeerConnection {
   private socket: any
   private pc: null | RTCPeerConnection
+  private roomId: null | string
   private isNegotiationNeeded: boolean
 
   constructor() {
     this.socket = socket.connect()
     this.pc = null
+    this.roomId = null
     this.isNegotiationNeeded = true
   }
 
-  public connect = (stream: MediaStream): RTCPeerConnection => {
+  public connect = (stream: MediaStream, roomId: string): RTCPeerConnection => {
     const config = {
       iceServers: [
         {
@@ -25,6 +27,9 @@ class PeerConnection {
     }
 
     this.pc = new RTCPeerConnection(config)
+    this.roomId = roomId
+
+    console.log(this.pc)
 
     this.pc.addEventListener('track', this.handleTrack)
     this.pc.addEventListener('icecandidate', this.handleIcecandidate)
@@ -46,7 +51,6 @@ class PeerConnection {
       try {
         console.log('Received offer ...')
 
-        // this.connect()
         await this.pc?.setRemoteDescription(offer)
       } catch (e) {
         console.error(e)
@@ -65,6 +69,8 @@ class PeerConnection {
       }
     })
 
+    this.socket.on(types.CALL, console.error)
+
     this.socket.on(types.CANDIDATE, (data: string) => {
       const { ice, sdp } = JSON.parse(data)
       const candidate = new RTCIceCandidate(ice)
@@ -77,6 +83,8 @@ class PeerConnection {
         this.pc?.setRemoteDescription(sdp)
       })
     })
+
+    this.socket.on(types.CALL, console.log)
   }
 
   private handleTrack = (e: RTCTrackEvent): void => {
@@ -136,7 +144,12 @@ class PeerConnection {
   }
 
   private sendSDP = (sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {
-    this.socket.emit(sessionDescription.type, sessionDescription)
+    const data = {
+      roomId: this.roomId,
+      sdp: sessionDescription,
+    }
+
+    this.socket.emit(sessionDescription.type, data)
   }
 
   // public connect = (isOffer: boolean): RTCPeerConnection => {

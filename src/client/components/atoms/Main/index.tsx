@@ -6,6 +6,7 @@ const MainComponent = styled.main`
   justify-content: center;
   align-items: center;
   height: calc(100vh - 60px);
+  padding: 0 20px;
 `
 
 export const Main: React.FC = ({ children }) => {

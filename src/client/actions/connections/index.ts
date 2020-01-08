@@ -62,9 +62,12 @@ export const connectSocketFailure = (error: Error) =>
     },
   } as const)
 
-export const connectRoom = () =>
+export const connectRoom = (roomId: string) =>
   ({
     type: types.CONNECT_ROOM,
+    payload: {
+      roomId,
+    },
   } as const)
 
 export const connectRoomSuccess = (pc: RTCPeerConnection) =>

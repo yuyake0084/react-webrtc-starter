@@ -2,24 +2,37 @@ import { Server } from 'http'
 import socketIO from 'socket.io'
 import * as types from '@client/utils/connectionTypes'
 
+type SocketType = typeof types[keyof typeof types]
+
 type Custom = {
   roomId: string
   from?: string
 }
 
-export const connectSocket = (server: Server) => {
+export const connectSocket = (server: Server): void => {
   const io = socketIO(server)
 
   io.on('connection', (socket: socketIO.Socket & Custom) => {
     console.log('====> connect')
 
     socket.on(types.JOIN, ({ roomId }) => {
-      console.log('===> join')
+      console.log('====> join')
+
+      socket.roomId = roomId
       socket.join(roomId)
     })
 
     socket.on(types.CALL, ({ roomId }) => {
-      console.log('====> call')
+      console.log(`====> ${types.CALL}`, roomId)
+
+      const rooms = Object.keys(io.sockets.adapter.rooms)
+
+      if (!rooms.includes(roomId)) {
+        console.log(`====> ${types.ROOM_NOT_FOUND}`)
+        socket.to(socket.id).emit(types.ROOM_NOT_FOUND)
+        return
+      }
+
       const data = {
         roomId,
         from: socket.id,
@@ -28,18 +41,15 @@ export const connectSocket = (server: Server) => {
       socket.broadcast.to(roomId).emit(types.CALL, data)
     })
 
-    // Object.values(types).forEach(type => {
-    //   socket.on(type, data => {
-    //     io.clients((err: Error, clients: string[]) => {
-    //       if (err) err
+    const transferArray: SocketType[] = [types.OFFER, types.ANSWER, types.CANDIDATE]
 
-    //       clients
-    //         .filter(client => client !== socket.id)
-    //         .forEach(client => {
-    //           io.to(client).emit(type, data)
-    //         })
-    //     })
-    //   })
-    // })
+    transferArray.forEach((type: SocketType) => {
+      socket.on(type, data => {
+        const { roomId, sdp } = data
+
+        console.log(data)
+        socket.broadcast.to(roomId).emit(type, sdp)
+      })
+    })
   })
 }

@@ -1,6 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import * as connectionsAction from '@client/actions/connections'
+import { connectionsSelector } from '@client/selectors'
+import { Button } from '@client/components/atoms'
 import { SelfVideo } from '@client/components/molecules'
 
 const Wrapper = styled.div`
@@ -8,12 +11,31 @@ const Wrapper = styled.div`
   padding: 50px 0;
 `
 
+const ButtonBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`
+
 export const VideoWrapper: React.FC = () => {
   const dispatch = useDispatch()
+  const { roomId, pc } = useSelector(connectionsSelector)
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault()
+
+    if (roomId) {
+      dispatch(connectionsAction.callRoom(roomId))
+    }
+  }
 
   return (
     <Wrapper>
       <SelfVideo />
+      {pc && (
+        <ButtonBox>
+          <Button value="Join!" onClick={handleClick} />
+        </ButtonBox>
+      )}
     </Wrapper>
   )
 }

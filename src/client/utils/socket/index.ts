@@ -8,7 +8,7 @@ class Socket {
     this.socket = null
   }
 
-  public connect = () => {
+  public connect = (): void => {
     this.socket = io(process.env.DOMAIN as any)
     this.listenEvent()
 
@@ -23,9 +23,14 @@ class Socket {
     this.socket.emit(types.CALL, { roomId })
   }
 
-  private listenEvent = () => {
-    this.socket.on(types.CALL, (data: Object) => {
+  private listenEvent = (): void => {
+    console.log(this.socket)
+    this.socket.on(types.CALL, (data: Record<string, any>) => {
       console.log(data)
+    })
+
+    this.socket.on(types.ROOM_NOT_FOUND, () => {
+      console.log('部屋ないよーーーーー')
     })
   }
 

@@ -4,7 +4,7 @@ import { Redirect, useParams } from 'react-router-dom'
 import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 import { Head, Main } from '@client/components/atoms'
-import { SelfVideo } from '@client/components/molecules'
+import { VideoWrapper } from '@client/components/organisms'
 
 export const Room: React.FC = () => {
   const { roomId } = useParams()
@@ -14,15 +14,16 @@ export const Room: React.FC = () => {
 
   React.useEffect(() => {
     if (roomId && stream === null) {
-      dispatch(connectionsAction.callRoom(roomId))
+      dispatch(
+        connectionsAction.getUserMedia({
+          video: true,
+          audio: true,
+        }),
+      )
     }
   }, [])
 
   React.useEffect(() => {
-    if (stream) {
-      dispatch(connectionsAction.connectRoom())
-    }
-
     if (pc && !stream && !streams.length) {
       setIsEnded(true)
     }
@@ -36,7 +37,7 @@ export const Room: React.FC = () => {
         <>
           <Head title={`${roomId}'s room`} />
           <Main>
-            <SelfVideo />
+            <VideoWrapper />
           </Main>
         </>
       )}
