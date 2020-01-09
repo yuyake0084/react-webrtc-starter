@@ -1,6 +1,3 @@
-import { put } from 'redux-saga/effects'
-import * as connectionsAction from '@client/actions/connections'
-import { socket } from '@client/utils/socket'
 import * as types from '@client/utils/connectionTypes'
 
 class PeerConnection {
@@ -10,7 +7,6 @@ class PeerConnection {
   private isNegotiationNeeded: boolean
 
   constructor() {
-    this.socket = socket.connect()
     this.pc = null
     this.roomId = null
     this.isNegotiationNeeded = true
@@ -29,8 +25,6 @@ class PeerConnection {
     this.pc = new RTCPeerConnection(config)
     this.roomId = roomId
 
-    console.log(this.pc)
-
     this.pc.addEventListener('track', this.handleTrack)
     this.pc.addEventListener('icecandidate', this.handleIcecandidate)
     this.pc.addEventListener('negotiationneeded', this.handleNegotiationneeded)
@@ -44,19 +38,19 @@ class PeerConnection {
     stream.getTracks().forEach(track => this.pc?.addTrack(track, stream))
   }
 
+  public receivedOffer = async (data: RTCSessionDescriptionInit): Promise<void> => {
+    const offer = new RTCSessionDescription(data)
+
+    try {
+      console.log('Received offer ...')
+
+      await this.pc?.setRemoteDescription(offer)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   private handleSocketMessage = () => {
-    socket.listenCall(async (data: string) => {
-      const offer = new RTCSessionDescription(JSON.parse(data))
-
-      try {
-        console.log('Received offer ...')
-
-        await this.pc?.setRemoteDescription(offer)
-      } catch (e) {
-        console.error(e)
-      }
-    })
-
     this.socket.on(types.ANSWER, async (data: string) => {
       const message = JSON.parse(data)
       const answer = new RTCSessionDescription(message)

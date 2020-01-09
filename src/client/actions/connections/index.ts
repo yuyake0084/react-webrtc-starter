@@ -46,10 +46,11 @@ export const connectSocket = (roomId: string) =>
     },
   } as const)
 
-export const connectSocketSuccess = (roomId: State['roomId']) =>
+export const connectSocketSuccess = (socket: State['socket'], roomId: State['roomId']) =>
   ({
     type: types.CONNECT_SOCKET_SUCCESS,
     payload: {
+      socket,
       roomId,
     },
   } as const)
