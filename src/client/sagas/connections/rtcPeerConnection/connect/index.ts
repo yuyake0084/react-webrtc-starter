@@ -6,10 +6,13 @@ import { peerConnection } from '@client/utils/peerConnection'
 export function* connectRoom(action: ReturnType<typeof connectionsAction.connectRoom>): Generator {
   try {
     const { roomId } = action.payload
-    const { stream } = yield select(connectionsSelector)
-    const pc = peerConnection.connect(stream, roomId)
+    const { stream }: any = yield select(connectionsSelector)
 
-    yield put(connectionsAction.connectRoomSuccess(pc))
+    if (stream) {
+      const pc = peerConnection.connect(stream, roomId)
+
+      yield put(connectionsAction.connectRoomSuccess(pc))
+    }
   } catch (e) {
     yield put(connectionsAction.connectRoomFailure(e))
   }

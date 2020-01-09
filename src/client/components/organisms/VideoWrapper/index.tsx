@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router'
 import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 import { Button } from '@client/components/atoms'
@@ -19,7 +20,8 @@ const ButtonBox = styled.div`
 
 export const VideoWrapper: React.FC = () => {
   const dispatch = useDispatch()
-  const { roomId, pc } = useSelector(connectionsSelector)
+  const { roomId } = useParams()
+  const { pc } = useSelector(connectionsSelector)
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
 
@@ -31,7 +33,7 @@ export const VideoWrapper: React.FC = () => {
   return (
     <Wrapper>
       <SelfVideo />
-      {pc && (
+      {!pc && (
         <ButtonBox>
           <Button value="Join!" onClick={handleClick} />
         </ButtonBox>

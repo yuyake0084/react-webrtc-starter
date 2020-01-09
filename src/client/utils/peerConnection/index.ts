@@ -1,7 +1,6 @@
 import * as types from '@client/utils/connectionTypes'
 
 class PeerConnection {
-  private socket: any
   private pc: null | RTCPeerConnection
   private roomId: null | string
   private isNegotiationNeeded: boolean
@@ -50,35 +49,29 @@ class PeerConnection {
     }
   }
 
-  private handleSocketMessage = () => {
-    this.socket.on(types.ANSWER, async (data: string) => {
-      const message = JSON.parse(data)
-      const answer = new RTCSessionDescription(message)
+  public receivedAnswer = async (data: string) => {
+    const message = JSON.parse(data)
+    const answer = new RTCSessionDescription(message)
 
-      try {
-        console.log('Received answer ...')
-        await this.pc?.setRemoteDescription(answer)
-      } catch (e) {
-        console.log(e)
-      }
+    try {
+      console.log('Received answer ...')
+      await this.pc?.setRemoteDescription(answer)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  public receivedCandidate = (data: string) => {
+    const { ice, sdp } = JSON.parse(data)
+    const candidate = new RTCIceCandidate(ice)
+
+    console.log('Received candidate ...')
+
+    // MEMO: addIceCandidateはsetRemoteDescriptionを実行してからでないと動作しない
+    this.pc?.addIceCandidate(candidate).catch(() => {
+      console.log('unresolved setRemoteDescription')
+      this.pc?.setRemoteDescription(sdp)
     })
-
-    this.socket.on(types.CALL, console.error)
-
-    this.socket.on(types.CANDIDATE, (data: string) => {
-      const { ice, sdp } = JSON.parse(data)
-      const candidate = new RTCIceCandidate(ice)
-
-      console.log('Received candidate ...')
-
-      // MEMO: addIceCandidateはsetRemoteDescriptionを実行してからでないと動作しない
-      this.pc?.addIceCandidate(candidate).catch(() => {
-        console.log('unresolved setRemoteDescription')
-        this.pc?.setRemoteDescription(sdp)
-      })
-    })
-
-    this.socket.on(types.CALL, console.log)
   }
 
   private handleTrack = (e: RTCTrackEvent): void => {
@@ -134,7 +127,7 @@ class PeerConnection {
       ice: candidate,
     })
 
-    this.socket.emit(types.CANDIDATE, data)
+    // socket.emit(types.CANDIDATE, data)
   }
 
   private sendSDP = (sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {
@@ -143,7 +136,7 @@ class PeerConnection {
       sdp: sessionDescription,
     }
 
-    this.socket.emit(sessionDescription.type, data)
+    // socket.emit(sessionDescription.type, data)
   }
 
   // public connect = (isOffer: boolean): RTCPeerConnection => {
