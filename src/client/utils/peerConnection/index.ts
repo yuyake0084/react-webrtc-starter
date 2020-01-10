@@ -2,11 +2,13 @@ import * as types from '@client/utils/connectionTypes'
 
 class PeerConnection {
   private pc: null | RTCPeerConnection
+  private socket: null | SocketIOClient.Socket
   private roomId: null | string
   private isNegotiationNeeded: boolean
 
   constructor() {
     this.pc = null
+    this.socket = null
     this.roomId = null
     this.isNegotiationNeeded = true
   }
@@ -28,9 +30,12 @@ class PeerConnection {
     this.pc.addEventListener('icecandidate', this.handleIcecandidate)
     this.pc.addEventListener('negotiationneeded', this.handleNegotiationneeded)
     this.addTrack(stream)
-    this.handleSocketMessage()
 
     return this.pc
+  }
+
+  public setSocket = (socket: SocketIOClient.Socket): void => {
+    this.socket = socket
   }
 
   private addTrack = (stream: MediaStream): void => {
@@ -49,9 +54,8 @@ class PeerConnection {
     }
   }
 
-  public receivedAnswer = async (data: string) => {
-    const message = JSON.parse(data)
-    const answer = new RTCSessionDescription(message)
+  public receivedAnswer = async (data: any): Promise<void> => {
+    const answer = new RTCSessionDescription(data)
 
     try {
       console.log('Received answer ...')
@@ -95,7 +99,7 @@ class PeerConnection {
       if (this.isNegotiationNeeded) {
         const offer = await this.pc?.createOffer()
 
-        console.log('negotiationneeded')
+        console.log('negotiationneeded', offer)
 
         if (offer) {
           await this.pc?.setLocalDescription(offer)
@@ -122,12 +126,12 @@ class PeerConnection {
   }
 
   private sendIceCandidate = (candidate: RTCPeerConnectionIceEvent['candidate']) => {
-    const data = JSON.stringify({
+    const data = {
       type: 'candidate',
       ice: candidate,
-    })
+    }
 
-    // socket.emit(types.CANDIDATE, data)
+    this.socket?.emit(types.CANDIDATE, data)
   }
 
   private sendSDP = (sessionDescription: RTCSessionDescription | RTCSessionDescriptionInit) => {

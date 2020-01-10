@@ -11,16 +11,19 @@ export function* connectSocket(
   try {
     const { roomId } = action.payload
     const state: any = yield select(connectionsSelector)
-    const socket = io(process.env.DOMAIN as any)
+    const socket = io(process.env.DOMAIN as string)
 
-    console.log('state.roomId', state.roomId)
-    if (!state.roomId) {
-      socket.on('connect', (e: any) => {
+    peerConnection.setSocket(socket)
+
+    if (!state.roomId && roomId) {
+      socket.on('connect', () => {
         socket.emit(types.JOIN, { roomId })
       })
+
+      yield put(connectionsAction.connectRoom(roomId))
     }
 
-    socket.on(types.JOIN, ({ roomId }: any) => {
+    socket.on(types.JOIN, ({ roomId }: Record<string, any>) => {
       console.log(roomId)
     })
 
@@ -37,6 +40,7 @@ export function* connectSocket(
 
     yield put(connectionsAction.connectSocketSuccess(socket, roomId))
   } catch (e) {
+    console.log(e)
     yield put(connectionsAction.connectSocketFailure(e))
   }
 }

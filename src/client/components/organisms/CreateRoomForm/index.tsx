@@ -1,9 +1,12 @@
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 // actions
 import * as connectionsAction from '@client/actions/connections'
+
+// selectors
+import { connectionsSelector } from '@client/selectors'
 
 // components
 import { Button, Input } from '@client/components/atoms'
@@ -21,19 +24,29 @@ const ButtonBox = styled.div`
 export const CreateRoomForm: React.FC = () => {
   const [value, setValue] = React.useState('')
   const dispatch = useDispatch()
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { stream } = useSelector(connectionsSelector)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.currentTarget
 
     e.preventDefault()
     setValue(value)
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-
-    dispatch(connectionsAction.connectSocket(value))
+    dispatch(
+      connectionsAction.getUserMedia({
+        video: true,
+        audio: false,
+      }),
+    )
   }
+
+  React.useEffect(() => {
+    if (stream) {
+      dispatch(connectionsAction.connectSocket(value))
+    }
+  }, [stream])
 
   return (
     <Container>

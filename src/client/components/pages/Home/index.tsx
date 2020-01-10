@@ -1,10 +1,6 @@
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-// actions
-import * as connectionsAction from '@client/actions/connections'
 
 // selectors
 import { connectionsSelector } from '@client/selectors'
@@ -15,18 +11,6 @@ import { CreateRoomForm } from '@client/components/organisms'
 
 export const Home: React.FC = () => {
   const { roomId, stream } = useSelector(connectionsSelector)
-  const dispatch = useDispatch()
-
-  React.useEffect(() => {
-    if (roomId && stream === null) {
-      dispatch(
-        connectionsAction.getUserMedia({
-          video: true,
-          audio: false,
-        }),
-      )
-    }
-  }, [roomId])
 
   return (
     <>

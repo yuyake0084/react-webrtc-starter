@@ -5,7 +5,6 @@ import * as types from '@client/utils/connectionTypes'
 type SocketType = typeof types[keyof typeof types]
 
 type Custom = {
-  roomId: string
   from?: string
 }
 
@@ -18,7 +17,6 @@ export const connectSocket = (server: Server): void => {
     socket.on(types.JOIN, ({ roomId }) => {
       console.log('====> join')
 
-      socket.roomId = roomId
       socket.join(roomId)
     })
 
@@ -47,7 +45,7 @@ export const connectSocket = (server: Server): void => {
       socket.on(type, data => {
         const { roomId, sdp } = data
 
-        console.log(data)
+        console.log(type, data)
         socket.broadcast.to(roomId).emit(type, sdp)
       })
     })
