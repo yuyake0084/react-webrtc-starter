@@ -26,7 +26,8 @@ export const VideoWrapper: React.FC = () => {
     e.preventDefault()
 
     if (roomId) {
-      dispatch(connectionsAction.callRoom(roomId))
+      // dispatch(connectionsAction.callRoom(roomId))
+      dispatch(connectionsAction.connectSocket(roomId))
     }
   }
 

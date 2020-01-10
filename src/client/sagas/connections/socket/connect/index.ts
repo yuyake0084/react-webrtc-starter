@@ -14,14 +14,15 @@ export function* connectSocket(
     const socket = io(process.env.DOMAIN as string)
 
     peerConnection.setSocket(socket)
+    yield put(connectionsAction.connectRoom(roomId))
 
-    if (!state.roomId && roomId) {
-      socket.on('connect', () => {
+    socket.on('connect', () => {
+      if (!state.roomId && roomId) {
         socket.emit(types.JOIN, { roomId })
-      })
+      }
 
-      yield put(connectionsAction.connectRoom(roomId))
-    }
+      console.log('connect', socket)
+    })
 
     socket.on(types.JOIN, ({ roomId }: Record<string, any>) => {
       console.log(roomId)
@@ -37,6 +38,7 @@ export function* connectSocket(
 
     socket.on(types.OFFER, peerConnection.receivedOffer)
     socket.on(types.ANSWER, peerConnection.receivedAnswer)
+    socket.on(types.CANDIDATE, peerConnection.receivedCandidate)
 
     yield put(connectionsAction.connectSocketSuccess(socket, roomId))
   } catch (e) {

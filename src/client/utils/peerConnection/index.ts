@@ -127,8 +127,11 @@ class PeerConnection {
 
   private sendIceCandidate = (candidate: RTCPeerConnectionIceEvent['candidate']) => {
     const data = {
-      type: 'candidate',
-      ice: candidate,
+      roomId: this.roomId,
+      sdp: {
+        type: 'candidate',
+        ice: candidate,
+      },
     }
 
     this.socket?.emit(types.CANDIDATE, data)

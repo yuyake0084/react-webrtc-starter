@@ -45,7 +45,7 @@ export const connectSocket = (server: Server): void => {
       socket.on(type, data => {
         const { roomId, sdp } = data
 
-        console.log(type, data)
+        console.log(roomId, type, data)
         socket.broadcast.to(roomId).emit(type, sdp)
       })
     })
