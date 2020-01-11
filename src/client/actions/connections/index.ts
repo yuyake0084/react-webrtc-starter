@@ -2,17 +2,23 @@ import * as types from '@client/types/connections'
 import { State } from '@client/reducers/connections'
 
 export type Actions =
+  | ReturnType<typeof setRoomId>
   | ReturnType<typeof getUserMedia>
   | ReturnType<typeof getUserMediaSuccess>
   | ReturnType<typeof getUserMediaFailure>
   | ReturnType<typeof connectSocket>
   | ReturnType<typeof connectSocketSuccess>
   | ReturnType<typeof connectSocketFailure>
-  | ReturnType<typeof connectRoom>
-  | ReturnType<typeof connectRoomSuccess>
-  | ReturnType<typeof connectRoomFailure>
   | ReturnType<typeof callRoom>
   | ReturnType<typeof addStream>
+
+export const setRoomId = (roomId: State['roomId']) =>
+  ({
+    type: types.SET_ROOM_ID,
+    payload: {
+      roomId,
+    },
+  } as const)
 
 export const getUserMedia = (constraints: MediaStreamConstraints) =>
   ({
@@ -46,11 +52,10 @@ export const connectSocket = (roomId: string) =>
     },
   } as const)
 
-export const connectSocketSuccess = (socket: State['socket'], roomId: State['roomId']) =>
+export const connectSocketSuccess = (roomId: State['roomId']) =>
   ({
     type: types.CONNECT_SOCKET_SUCCESS,
     payload: {
-      socket,
       roomId,
     },
   } as const)
@@ -58,30 +63,6 @@ export const connectSocketSuccess = (socket: State['socket'], roomId: State['roo
 export const connectSocketFailure = (error: Error) =>
   ({
     type: types.CONNECT_SOCKET_FAILURE,
-    payload: {
-      error,
-    },
-  } as const)
-
-export const connectRoom = (roomId: string) =>
-  ({
-    type: types.CONNECT_ROOM,
-    payload: {
-      roomId,
-    },
-  } as const)
-
-export const connectRoomSuccess = (pc: RTCPeerConnection) =>
-  ({
-    type: types.CONNECT_ROOM_SUCCESS,
-    payload: {
-      pc,
-    },
-  } as const)
-
-export const connectRoomFailure = (error: Error) =>
-  ({
-    type: types.CONNECT_ROOM_FAILURE,
     payload: {
       error,
     },

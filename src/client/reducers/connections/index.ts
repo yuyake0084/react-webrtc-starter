@@ -23,6 +23,12 @@ export const initialState = {
 
 export const reducer = (state: State = initialState, action: Actions): State => {
   switch (action.type) {
+    case types.SET_ROOM_ID:
+      return {
+        ...state,
+        roomId: action.payload.roomId,
+      }
+
     case types.GET_USER_MEDIA_SUCCESS:
       return {
         ...state,
@@ -33,12 +39,7 @@ export const reducer = (state: State = initialState, action: Actions): State => 
       return {
         ...state,
         ...action.payload,
-      }
-
-    case types.CONNECT_ROOM_SUCCESS:
-      return {
-        ...state,
-        pc: action.payload.pc,
+        isConnecting: true,
       }
 
     case types.GET_USER_MEDIA_FAILURE:

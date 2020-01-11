@@ -14,6 +14,7 @@ export const Room: React.FC = () => {
 
   React.useEffect(() => {
     if (roomId && stream === null) {
+      dispatch(connectionsAction.setRoomId(roomId))
       dispatch(
         connectionsAction.getUserMedia({
           video: true,

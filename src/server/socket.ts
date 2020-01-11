@@ -5,6 +5,7 @@ import * as types from '@client/utils/connectionTypes'
 type SocketType = typeof types[keyof typeof types]
 
 type Custom = {
+  roomId: string
   from?: string
 }
 
@@ -12,11 +13,12 @@ export const connectSocket = (server: Server): void => {
   const io = socketIO(server)
 
   io.on('connection', (socket: socketIO.Socket & Custom) => {
-    console.log('====> connect')
+    console.log('====> connect', socket.id)
 
     socket.on(types.JOIN, ({ roomId }) => {
       console.log('====> join')
 
+      socket.roomId = roomId
       socket.join(roomId)
     })
 
@@ -33,20 +35,32 @@ export const connectSocket = (server: Server): void => {
 
       const data = {
         roomId,
-        from: socket.id,
+        fromId: socket.id,
       }
 
       socket.broadcast.to(roomId).emit(types.CALL, data)
     })
 
-    const transferArray: SocketType[] = [types.OFFER, types.ANSWER, types.CANDIDATE]
+    const transferArray: Array<SocketType> = [types.OFFER, types.ANSWER, types.CANDIDATE]
 
     transferArray.forEach((type: SocketType) => {
-      socket.on(type, data => {
-        const { roomId, sdp } = data
+      socket.on(type, ({ toId, roomId, sdp }) => {
+        const data = {
+          fromId: socket.id,
+          sdp,
+        }
+        // const clients = Object.keys(io.sockets.adapter.rooms[roomId].sockets)
+        console.log(
+          `====> ${type}: roomId is "${roomId}". send to ${toId || 'everyone'} from "${
+            socket.id
+          }".`,
+        )
 
-        console.log(roomId, type, data)
-        socket.broadcast.to(roomId).emit(type, sdp)
+        if (toId) {
+          socket.to(roomId).emit(type, data)
+        } else {
+          socket.broadcast.to(roomId).emit(type, data)
+        }
       })
     })
   })

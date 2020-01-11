@@ -21,12 +21,11 @@ const ButtonBox = styled.div`
 export const VideoWrapper: React.FC = () => {
   const dispatch = useDispatch()
   const { roomId } = useParams()
-  const { pc } = useSelector(connectionsSelector)
+  const { isConnecting } = useSelector(connectionsSelector)
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
 
     if (roomId) {
-      // dispatch(connectionsAction.callRoom(roomId))
       dispatch(connectionsAction.connectSocket(roomId))
     }
   }
@@ -34,7 +33,7 @@ export const VideoWrapper: React.FC = () => {
   return (
     <Wrapper>
       <SelfVideo />
-      {!pc && (
+      {!isConnecting && (
         <ButtonBox>
           <Button value="Join!" onClick={handleClick} />
         </ButtonBox>
