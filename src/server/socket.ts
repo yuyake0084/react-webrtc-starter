@@ -1,6 +1,7 @@
 import { Server } from 'http'
 import socketIO from 'socket.io'
 import * as types from '@client/utils/connectionTypes'
+import { SessionDescription } from '@client/utils/peerConnection'
 
 type SocketType = typeof types[keyof typeof types]
 
@@ -10,7 +11,9 @@ type Custom = {
 }
 
 export const connectSocket = (server: Server): void => {
-  const io = socketIO(server)
+  const io = socketIO(server, {
+    transports: ['websocket'],
+  })
 
   io.on('connection', (socket: socketIO.Socket & Custom) => {
     console.log('====> connect', socket.id)
@@ -18,7 +21,6 @@ export const connectSocket = (server: Server): void => {
     socket.on(types.JOIN, ({ roomId }) => {
       console.log(`====> join: create room "${roomId}"`)
 
-      socket.roomId = roomId
       socket.join(roomId)
     })
 
