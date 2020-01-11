@@ -1,6 +1,8 @@
-// import loadable from '@loadable/component'
+import loadable from '@loadable/component'
 
-// const Home = /* #__LOADABLE__ */() => import(/* webpackPrefetch: true */　'@client/components/pages/Home')
-
-// // @ts-ignore
-// export const LoadableHome = loadable(Home)
+export const LoadableHome = loadable(() =>
+  import(/* webpackPrefetch: true */ '@client/components/pages/Home'),
+)
+export const LoadableRoom = loadable(() =>
+  import(/* webpackPrefetch: true */ '@client/components/pages/Room'),
+)

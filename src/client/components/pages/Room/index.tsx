@@ -45,3 +45,5 @@ export const Room: React.FC = () => {
     </>
   )
 }
+
+export default Room

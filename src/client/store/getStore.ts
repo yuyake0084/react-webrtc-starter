@@ -1,4 +1,9 @@
 import { Store } from 'redux'
-import { store } from '../index'
 
-export const getStore = () => store
+export const getStore = async (): Promise<Store | void> => {
+  if (process.env.IS_BROWSER) {
+    const { store } = await import(/* webpackMode: "eager" */ '../index')
+
+    return store
+  }
+}

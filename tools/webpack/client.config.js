@@ -12,7 +12,7 @@ const base = {
   output: {
     path: resolve('dist', 'client'),
   },
-  watch: true,
+  watch: process.env.NODE_ENV === 'development',
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {

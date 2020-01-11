@@ -70,7 +70,7 @@ class PeerConnection {
     pc.addEventListener('icecandidate', (e: RTCPeerConnectionIceEvent) =>
       this.handleIcecandidate(e, clientId),
     )
-    pc.addEventListener('track', (e: RTCTrackEvent) => this.handleTrack(e, clientId))
+    pc.addEventListener('track', this.handleTrack)
 
     this.stream?.getTracks().forEach(track => {
       if (this.stream !== null) {
@@ -177,11 +177,13 @@ class PeerConnection {
   /**
    * RemoteからMediaStreamを受け取った時の処理
    */
-  private handleTrack = async (e: RTCTrackEvent, clientId: string): Promise<void> => {
-    const { dispatch } = getStore()
+  private handleTrack = async (e: RTCTrackEvent): Promise<void> => {
+    const store = await getStore()
     const [stream] = e.streams
 
-    dispatch(connectionsAction.addStream(stream))
+    if (store) {
+      store.dispatch(connectionsAction.addStream(stream))
+    }
   }
 
   /**

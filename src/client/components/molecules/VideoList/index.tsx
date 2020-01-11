@@ -7,12 +7,13 @@ import { SelfVideo } from '@client/components/molecules'
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
 `
 
 const VideoBox = styled.div`
-  margin: 5px;
+  width: 48%;
+  margin: 1%;
 `
 
 export const VideoList: React.FC = () => {

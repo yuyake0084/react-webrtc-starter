@@ -1,17 +1,17 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-// import { LoadableHome } from './routes'
+import { LoadableHome, LoadableRoom } from './routes'
 import { App } from '@client/components'
-import { Home, Room } from '@client/components/pages'
+// import { Home, Room } from '@client/components/pages'
 
 export const Router = () => (
   <App>
     <Switch>
       <Route exact path="/">
-        <Home />
+        <LoadableHome />
       </Route>
       <Route exact path="/:roomId">
-        <Room />
+        <LoadableRoom />
       </Route>
     </Switch>
   </App>
