@@ -44,7 +44,7 @@
     "ignore": [
       "./src/client/**/*"
     ],
-    "ext": "ts",
+    "ext": "ts,tsx",
     "exec": "ts-node -r tsconfig-paths/register ./src/server/index.ts"
   },
   "eslintConfig": {
@@ -121,7 +121,7 @@
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/preset-typescript": "^7.7.7",
-    "@loadable/babel-plugin": "^5.11.0",
+    "@loadable/babel-plugin": "^5.12.0",
     "@loadable/webpack-plugin": "^5.7.1",
     "@storybook/addon-knobs": "5.2.8",
     "@storybook/addon-storyshots": "5.2.8",
@@ -205,8 +205,8 @@
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/react-fontawesome": "^0.1.8",
-    "@loadable/component": "5.11.0",
-    "@loadable/server": "5.11.0",
+    "@loadable/component": "^5.12.0",
+    "@loadable/server": "^5.12.0",
     "body-parser": "1.19.0",
     "compression": "1.7.4",
     "core-js": "3.6.1",
