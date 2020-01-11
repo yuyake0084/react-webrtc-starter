@@ -1,1 +1,1 @@
-web: node ./dist/server/server/index.js
+web: yarn start:prod
