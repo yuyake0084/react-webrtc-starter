@@ -2,25 +2,25 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
-  border-radius: 14px;
+  border-radius: 10px;
   background-color: #000;
 
   ${({ width, height }: Pick<Props, 'width' | 'height'>) => `
-    max-width: ${width}px;
-    max-height: ${height}px;
+    max-width: ${width ? `${width}px` : '100%'};
+    max-height: ${height ? `${width}px` : '100%'};
   `}
 `
 
 const VideoComponent = styled.video`
   width: 100%;
-  border-radius: 14px;
+  border-radius: 10px;
   vertical-align: bottom;
 `
 
 type Props = {
   autoplay?: HTMLVideoElement['autoplay']
-  width: HTMLVideoElement['width']
-  height: HTMLVideoElement['height']
+  width?: HTMLVideoElement['width']
+  height?: HTMLVideoElement['height']
   srcObject: HTMLVideoElement['srcObject']
 }
 

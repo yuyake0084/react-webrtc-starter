@@ -1,4 +1,6 @@
 import io from 'socket.io-client'
+import { getStore } from '@client/store/getStore'
+import * as connectionsAction from '@client/actions/connections'
 import * as types from '@client/utils/connectionTypes'
 
 type ClientId = string
@@ -49,16 +51,17 @@ class PeerConnection {
     this.socket.on(types.CANDIDATE, this.receivedCandidate)
   }
 
+  /**
+   * 新しくRTCPeerConnectionとの接続を行う処理
+   */
   private prepareConnection = (clientId: ClientId): RTCPeerConnection => {
     const config = {
       iceServers: [
         {
           urls: 'stun:stun.l.google.com:19302',
-          // urls: 'stun:stun.webrtc.ecl.ntt.com:3478',
         },
       ],
     }
-
     const pc = new RTCPeerConnection(config)
 
     this.setPeerConnection(clientId, pc)
@@ -131,7 +134,6 @@ class PeerConnection {
 
       // 送り元に送り返す
       this.sendSDP(fromId, sessionDescription)
-      console.log(sessionDescription)
     } catch (e) {
       console.error(e)
     }
@@ -172,10 +174,14 @@ class PeerConnection {
     }
   }
 
-  private handleTrack = (e: RTCTrackEvent, clientId: string): void => {
+  /**
+   * RemoteからMediaStreamを受け取った時の処理
+   */
+  private handleTrack = async (e: RTCTrackEvent, clientId: string): Promise<void> => {
+    const { dispatch } = getStore()
     const [stream] = e.streams
 
-    console.log(stream)
+    dispatch(connectionsAction.addStream(stream))
   }
 
   /**

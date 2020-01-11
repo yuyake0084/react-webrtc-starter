@@ -13,7 +13,7 @@ const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate
 const initialData = JSON.parse(
   document.getElementById('initial-data')!.getAttribute('data-json') || '',
 )
-const { store } = configureStore(initialData)
+export const { store } = configureStore(initialData)
 const render = async () => {
   const { Router } = await import(/* webpackMode: "eager" */ './router')
 

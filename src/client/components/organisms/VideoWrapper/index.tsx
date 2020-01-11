@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
 import { Button } from '@client/components/atoms'
-import { SelfVideo } from '@client/components/molecules'
+import { VideoList } from '@client/components/molecules'
 
 const Wrapper = styled.div`
   position: relative;
@@ -21,7 +21,7 @@ const ButtonBox = styled.div`
 export const VideoWrapper: React.FC = () => {
   const dispatch = useDispatch()
   const { roomId } = useParams()
-  const { isConnecting } = useSelector(connectionsSelector)
+  const { isConnecting, streams } = useSelector(connectionsSelector)
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
 
@@ -32,7 +32,7 @@ export const VideoWrapper: React.FC = () => {
 
   return (
     <Wrapper>
-      <SelfVideo />
+      <VideoList />
       {!isConnecting && (
         <ButtonBox>
           <Button value="Join!" onClick={handleClick} />
