@@ -2,20 +2,21 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 const InputComponent = styled.input`
-  color: #fff;
+  color: #999;
   font-size: 14px;
   width: 250px;
   padding: 16px 24px;
-  background-color: transparent;
+  background-color: #f5f5f5;
   border: none;
   border-bottom: 2px solid #37b782;
   outline: none;
   transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 2px;
+  border-radius: 4px;
   box-sizing: border-box;
 
   &::placeholder {
-    color: #aaa;
+    color: #ccc;
     background-color: transparent;
     letter-spacing: 2px;
   }

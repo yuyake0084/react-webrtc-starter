@@ -16,6 +16,7 @@ export type Actions =
   | ReturnType<typeof addStream>
   | ReturnType<typeof removeStream>
   | ReturnType<typeof leaveRoom>
+  | ReturnType<typeof resetState>
 
 export const setRoomId = (roomId: State['roomId']) =>
   ({
@@ -133,4 +134,9 @@ export const removeStream = (clientId: MediaStream['id']) =>
 export const leaveRoom = () =>
   ({
     type: types.LEAVE_ROOM,
+  } as const)
+
+export const resetState = () =>
+  ({
+    type: types.RESET_STATE,
   } as const)

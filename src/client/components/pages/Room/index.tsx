@@ -8,8 +8,7 @@ import { VideoWrapper } from '@client/components/organisms'
 
 export const Room: React.FC = () => {
   const { roomId } = useParams()
-  const [isEnded, setIsEnded] = React.useState(false)
-  const { pc, stream, streams } = useSelector(connectionsSelector)
+  const { isEnded, stream } = useSelector(connectionsSelector)
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -24,16 +23,10 @@ export const Room: React.FC = () => {
     }
   }, [])
 
-  React.useEffect(() => {
-    if (pc && !stream && !streams.length) {
-      setIsEnded(true)
-    }
-  }, [stream, streams])
-
   return (
     <>
       {isEnded ? (
-        <Redirect to="/" />
+        <Redirect to="/thanks" />
       ) : (
         <>
           <Head title={`${roomId}'s room`} />

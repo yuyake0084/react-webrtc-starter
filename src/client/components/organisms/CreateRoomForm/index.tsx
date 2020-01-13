@@ -37,7 +37,7 @@ export const CreateRoomForm: React.FC = () => {
     dispatch(
       connectionsAction.getUserMedia({
         video: true,
-        audio: false,
+        audio: true,
       }),
     )
   }

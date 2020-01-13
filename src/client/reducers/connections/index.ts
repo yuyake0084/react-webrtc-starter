@@ -79,6 +79,9 @@ export const reducer = (state: State = initialState, action: Actions): State => 
         isConnecting: false,
       }
 
+    case types.RESET_STATE:
+      return initialState
+
     default:
       return state
   }
