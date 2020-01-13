@@ -1,7 +1,7 @@
 import { Server } from 'http'
 import socketIO from 'socket.io'
+import redis from 'socket.io-redis'
 import * as types from '@client/utils/connectionTypes'
-import { SessionDescription } from '@client/utils/peerConnection'
 
 type SocketType = typeof types[keyof typeof types]
 
@@ -15,22 +15,27 @@ export const connectSocket = (server: Server): void => {
     transports: ['websocket'],
   })
 
+  // io.adapter(redis({
+  //   host: '127.0.0.1',
+  //   port: process.env.REDIS_PORT as number,
+  // }))
+
   io.on('connection', (socket: socketIO.Socket & Custom) => {
     console.log('====> connect', socket.id)
 
     socket.on(types.JOIN, ({ roomId }) => {
-      console.log(`====> join: create room "${roomId}"`)
+      console.log(`====> [${types.JOIN}]: create room "${roomId}"`)
 
       socket.join(roomId)
     })
 
     socket.on(types.CALL, ({ roomId }) => {
-      console.log(`====> ${types.CALL}`, roomId)
+      console.log(`====> [${types.CALL}]: roomId is "${roomId}"`)
 
       const rooms = Object.keys(io.sockets.adapter.rooms)
 
       if (!rooms.includes(roomId)) {
-        console.log(`====> ${types.ROOM_NOT_FOUND}`)
+        console.log(`====> [${types.ROOM_NOT_FOUND}]: roomId is "${roomId}"`)
         socket.to(socket.id).emit(types.ROOM_NOT_FOUND)
         return
       }
@@ -43,6 +48,20 @@ export const connectSocket = (server: Server): void => {
       socket.broadcast.to(roomId).emit(types.CALL, data)
     })
 
+    socket.on(types.EXIT, ({ roomId }) => {
+      console.log(`====> [${types.EXIT}]: clientId id ${socket.id}`)
+      const data = {
+        fromId: socket.id,
+      }
+
+      socket.broadcast.to(roomId).emit(types.EXIT, data)
+    })
+
+    socket.on(types.LEAVE, ({ roomId }) => {
+      console.log(`====> [${types.LEAVE}]: roomId is ${roomId}`)
+      socket.leave(roomId)
+    })
+
     const transferArray: Array<SocketType> = [types.OFFER, types.ANSWER, types.CANDIDATE]
 
     transferArray.forEach((type: SocketType) => {
@@ -51,9 +70,9 @@ export const connectSocket = (server: Server): void => {
           fromId: socket.id,
           sdp,
         }
-        // const clients = Object.keys(io.sockets.adapter.rooms[roomId].sockets)
+
         console.log(
-          `====> ${type}: roomId is "${roomId}". send to ${toId || 'everyone'} from "${
+          `====> [${type}]: roomId is "${roomId}". send to ${toId || 'everyone'} from "${
             socket.id
           }".`,
         )

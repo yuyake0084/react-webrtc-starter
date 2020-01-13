@@ -24,7 +24,7 @@ export const VideoList: React.FC = () => {
       <VideoBox>
         <SelfVideo />
       </VideoBox>
-      {streams.map(stream => (
+      {streams.map(({ stream }) => (
         <VideoBox key={stream.id}>
           <Video srcObject={stream} />
         </VideoBox>

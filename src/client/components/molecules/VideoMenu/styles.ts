@@ -13,14 +13,23 @@ export const Container = styled.div`
   z-index: 10;
 `
 
-export const Circle = styled.div`
-  padding: 16px 14px;
+export const Circle = styled.button`
+  display: block;
+  padding: 12px;
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   border-radius: 50%;
+  border: none;
+  outline: none;
+  transition: all 0.3s;
 
-  ${({ color }) => `
+  ${({ color }: { color: string }) => `
     background-color: ${color};
+  
+    &:hover {
+      color: ${color};
+      background-color: #fff;
+    }
   `}
 `

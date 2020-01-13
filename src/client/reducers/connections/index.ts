@@ -3,16 +3,21 @@ import { Actions } from '@client/actions/connections'
 
 export interface State {
   isConnecting: boolean
+  isEnded: boolean
   error: Error | null
   pc: RTCPeerConnection | null
   socket: SocketIOClient.Socket | null
   roomId: string | null
   stream: MediaStream | null
-  streams: MediaStream[]
+  streams: Array<{
+    clientId: string
+    stream: MediaStream
+  }>
 }
 
 export const initialState = {
   isConnecting: false,
+  isEnded: false,
   error: null,
   pc: null,
   socket: null,
@@ -42,8 +47,15 @@ export const reducer = (state: State = initialState, action: Actions): State => 
         isConnecting: true,
       }
 
+    case types.EXIT_ROOM_SUCCESS:
+      return {
+        ...initialState,
+        isEnded: true,
+      }
+
     case types.GET_USER_MEDIA_FAILURE:
     case types.CONNECT_SOCKET_FAILURE:
+    case types.EXIT_ROOM_FAILURE:
       return {
         ...state,
         error: action.payload.error,
@@ -52,7 +64,19 @@ export const reducer = (state: State = initialState, action: Actions): State => 
     case types.ADD_STREAM:
       return {
         ...state,
-        streams: [...state.streams, action.payload.stream],
+        streams: [...state.streams, action.payload],
+      }
+
+    case types.REMOVE_STREAM:
+      return {
+        ...state,
+        streams: state.streams.filter(({ clientId }) => clientId !== action.payload.clientId),
+      }
+
+    case types.LEAVE_ROOM:
+      return {
+        ...state,
+        isConnecting: false,
       }
 
     default:

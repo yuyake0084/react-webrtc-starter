@@ -10,7 +10,12 @@ export type Actions =
   | ReturnType<typeof connectSocketSuccess>
   | ReturnType<typeof connectSocketFailure>
   | ReturnType<typeof callRoom>
+  | ReturnType<typeof exitRoom>
+  | ReturnType<typeof exitRoomSuccess>
+  | ReturnType<typeof exitRoomFailure>
   | ReturnType<typeof addStream>
+  | ReturnType<typeof removeStream>
+  | ReturnType<typeof leaveRoom>
 
 export const setRoomId = (roomId: State['roomId']) =>
   ({
@@ -82,6 +87,24 @@ export const callRoomSuccess = () =>
     payload: {},
   } as const)
 
+export const exitRoom = () =>
+  ({
+    type: types.EXIT_ROOM,
+  } as const)
+
+export const exitRoomSuccess = () =>
+  ({
+    type: types.EXIT_ROOM_SUCCESS,
+  } as const)
+
+export const exitRoomFailure = (error: Error) =>
+  ({
+    type: types.EXIT_ROOM_FAILURE,
+    payload: {
+      error,
+    },
+  } as const)
+
 export const callRoomFailure = (error: Error) =>
   ({
     type: types.CALL_ROOM_FAILURE,
@@ -90,10 +113,24 @@ export const callRoomFailure = (error: Error) =>
     },
   } as const)
 
-export const addStream = (stream: MediaStream) =>
+export const addStream = (clientId: string, stream: MediaStream) =>
   ({
     type: types.ADD_STREAM,
     payload: {
+      clientId,
       stream,
     },
+  } as const)
+
+export const removeStream = (clientId: MediaStream['id']) =>
+  ({
+    type: types.REMOVE_STREAM,
+    payload: {
+      clientId,
+    },
+  } as const)
+
+export const leaveRoom = () =>
+  ({
+    type: types.LEAVE_ROOM,
   } as const)

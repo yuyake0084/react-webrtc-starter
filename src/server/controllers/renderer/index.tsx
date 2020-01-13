@@ -39,7 +39,6 @@ export async function get(
   )
 
   try {
-    console.log(process.env.NODE_ENV)
     const extractor = new ChunkExtractor({ statsFile })
     const tree = extractor.collectChunks(<AppComponent />)
 
