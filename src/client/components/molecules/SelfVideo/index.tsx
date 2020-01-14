@@ -22,7 +22,7 @@ export const SelfVideo: React.FC = () => {
   return (
     <Container>
       <VideoBox onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <Video autoplay width={960} height={540} srcObject={stream} />
+        <Video autoplay muted={false} width={960} height={540} srcObject={stream} />
         {isConnecting && isMouseEnter && <VideoMenu />}
       </VideoBox>
     </Container>

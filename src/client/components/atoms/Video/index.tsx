@@ -16,6 +16,7 @@ const VideoComponent = styled.video`
 
 type Props = {
   autoplay?: HTMLVideoElement['autoplay']
+  muted?: HTMLVideoElement['muted']
   width?: HTMLVideoElement['width']
   height?: HTMLVideoElement['height']
   srcObject: HTMLVideoElement['srcObject']
