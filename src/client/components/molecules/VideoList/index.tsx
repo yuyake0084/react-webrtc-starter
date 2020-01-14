@@ -9,6 +9,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: stretch;
+  flex-wrap: wrap;
 
   @media screen and (max-width: 375px) {
     display: block;
@@ -19,10 +20,10 @@ const VideoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 98%;
+  width: 49%;
   height: 100%;
   min-height: 200px;
-  margin: 1%;
+  margin: 0.5%;
   background-color: #000;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
