@@ -22,10 +22,12 @@ export const connectSocket = (server: Server): void => {
 
   io.on('connection', (socket: socketIO.Socket & Custom) => {
     console.log('====> connect', socket.id)
+    let id: string | null = null
 
     socket.on(types.JOIN, ({ roomId }) => {
       console.log(`====> [${types.JOIN}]: create room "${roomId}"`)
 
+      id = roomId
       socket.join(roomId)
     })
 
@@ -33,6 +35,8 @@ export const connectSocket = (server: Server): void => {
       console.log(`====> [${types.CALL}]: roomId is "${roomId}"`)
 
       const rooms = Object.keys(io.sockets.adapter.rooms)
+
+      console.log(rooms)
 
       if (!rooms.includes(roomId)) {
         console.log(`====> [${types.ROOM_NOT_FOUND}]: roomId is "${roomId}"`)
@@ -60,6 +64,10 @@ export const connectSocket = (server: Server): void => {
     socket.on(types.LEAVE, ({ roomId }) => {
       console.log(`====> [${types.LEAVE}]: roomId is ${roomId}`)
       socket.leave(roomId)
+    })
+
+    socket.on('disconnect', () => {
+      console.log(`====> [disconnect]: roomId is ${id}`)
     })
 
     const transferArray: Array<SocketType> = [types.OFFER, types.ANSWER, types.CANDIDATE]
