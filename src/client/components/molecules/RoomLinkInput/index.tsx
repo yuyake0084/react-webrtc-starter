@@ -12,11 +12,12 @@ const Container = styled.div`
 
 const Label = styled.label`
   width: 100%;
-  max-width: 180px;
+  max-width: 200px;
   padding: 14px 20px;
   font-size: 16px;
   font-weight: bold;
   color: #fff;
+  text-align: center;
   background-color: #5cd7da;
   box-sizing: border-box;
 `
@@ -49,9 +50,9 @@ export const RoomLinkInput: React.FC = () => {
     const input = inputRef.current
 
     e.preventDefault()
-    input.select()
 
     if (input) {
+      input.select()
       document.execCommand('copy')
     }
   }

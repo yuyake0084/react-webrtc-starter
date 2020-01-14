@@ -8,10 +8,18 @@ import { SelfVideo } from '@client/components/molecules'
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  align-items: stretch;
 `
 
 const VideoBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 98%;
+  height: 100%;
+  min-height: 200px;
+  background-color: #000;
+  border-radius: 8px;
   margin: 1%;
 `
 

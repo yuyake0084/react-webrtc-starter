@@ -2,9 +2,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
-  border-radius: 10px;
-  background-color: #000;
-
   ${({ width, height }: Pick<Props, 'width' | 'height'>) => `
     max-width: ${width ? `${width}px` : '100%'};
     max-height: ${height ? `${width}px` : '100%'};
