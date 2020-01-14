@@ -34,7 +34,7 @@ class PeerConnection {
     isRoomCreator: boolean = false,
   ): void => {
     this.socket = io(process.env.DOMAIN as string, {
-      transports: ['websocket'],
+      transports: ['websocket', 'polling'],
     })
     this.roomId = roomId
     this.stream = stream
