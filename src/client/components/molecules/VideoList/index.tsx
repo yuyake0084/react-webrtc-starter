@@ -11,7 +11,8 @@ const Container = styled.div`
 `
 
 const VideoBox = styled.div`
-  width: 100%;
+  width: 98%;
+  margin: 1%;
 `
 
 export const VideoList: React.FC = () => {

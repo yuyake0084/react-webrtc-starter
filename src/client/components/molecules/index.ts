@@ -1,4 +1,5 @@
 export * from './HeaderMenu'
+export * from './RoomLinkInput'
 export * from './SelfVideo'
 export * from './VideoList'
 export * from './VideoMenu'

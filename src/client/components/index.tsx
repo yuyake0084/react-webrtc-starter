@@ -16,6 +16,17 @@ export const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  input, button {
+    border: none;
+    outline: none;
+  }
+
+  input {
+    width: 100%;
+    color: #999;
+    letter-spacing: 2px;
+  }
 `
 
 const Container = styled.div`
