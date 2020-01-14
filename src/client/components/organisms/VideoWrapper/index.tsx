@@ -9,6 +9,7 @@ import { RoomLinkInput, VideoList } from '@client/components/molecules'
 
 const Wrapper = styled.div`
   position: relative;
+  width: 100%;
   padding: 50px 0;
 `
 

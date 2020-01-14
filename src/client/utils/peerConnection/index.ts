@@ -11,7 +11,6 @@ export interface SessionDescription {
 }
 
 class PeerConnection {
-  private pc: null | RTCPeerConnection
   private peerConnections: Array<{
     id: ClientId
     pc: RTCPeerConnection
@@ -21,7 +20,6 @@ class PeerConnection {
   private stream: null | MediaStream
 
   constructor() {
-    this.pc = null
     this.peerConnections = []
     this.socket = null
     this.roomId = null
@@ -188,6 +186,11 @@ class PeerConnection {
    */
   private createOffer = async ({ fromId }: SessionDescription): Promise<void> => {
     console.log('====> createOffer')
+
+    if (this.getPeerConnection(fromId)) {
+      return
+    }
+
     const pc = this.prepareConnection(fromId)
     const sessionDescription = await pc.createOffer()
 
@@ -203,6 +206,10 @@ class PeerConnection {
     console.log('====> createAnswer')
     const receivedOffer = new RTCSessionDescription(sdp)
     const pc = this.prepareConnection(fromId)
+
+    if (!pc) {
+      return
+    }
 
     try {
       await pc.setRemoteDescription(receivedOffer)

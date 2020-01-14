@@ -30,9 +30,10 @@ const ButtonBox = styled.div`
 
 export const Thanks: React.FC = () => {
   const dispatch = useDispatch()
-  const { isEnded } = useSelector(connectionsSelector)
+  const { isEnded, stream } = useSelector(connectionsSelector)
   const handleClickButton = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
+    stream?.getTracks().forEach(track => track.stop())
     dispatch(connectionsAction.resetState())
   }
 

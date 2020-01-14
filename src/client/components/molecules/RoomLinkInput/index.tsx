@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const Container = styled.div`
   display: flex;
   align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
   overflow: hidden;
   border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
