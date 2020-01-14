@@ -1,5 +1,5 @@
 # React WebRTC Starter
-Simple application using React and WebRTC.
+Simple application using React and WebRTC.  
 This application reproduces the mechanism of SFU using a native RTCPeerConnection without using a library such as SDK.
 
 ## Features
@@ -10,6 +10,8 @@ This application reproduces the mechanism of SFU using a native RTCPeerConnectio
 |React Router|Client-side routing|
 |Styled Components|Styling|
 |TypeScript|Checking static type|
+|Jest|Unit test|
+|Stroybook|Component management|
 |Express|Socket server, Server-side rendering|
 |Webpack|Bundle modules|
 |loadable-components|Code splitting|
