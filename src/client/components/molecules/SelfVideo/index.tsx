@@ -7,7 +7,7 @@ import { Container, VideoBox } from './styles'
 
 export const SelfVideo: React.FC = () => {
   const [isMouseEnter, setMouseEnter] = React.useState(false)
-  const { stream } = useSelector(connectionsSelector)
+  const { isConnecting, stream } = useSelector(connectionsSelector)
 
   const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
@@ -23,7 +23,7 @@ export const SelfVideo: React.FC = () => {
     <Container>
       <VideoBox onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <Video autoplay width={960} height={540} srcObject={stream} />
-        {isMouseEnter && <VideoMenu />}
+        {isConnecting && isMouseEnter && <VideoMenu />}
       </VideoBox>
     </Container>
   )

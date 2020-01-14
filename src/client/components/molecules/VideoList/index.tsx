@@ -9,6 +9,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: stretch;
+
+  @media screen and (max-width: 375px) {
+    display: block;
+  }
 `
 
 const VideoBox = styled.div`
@@ -18,9 +22,16 @@ const VideoBox = styled.div`
   width: 98%;
   height: 100%;
   min-height: 200px;
-  background-color: #000;
-  border-radius: 8px;
   margin: 1%;
+  background-color: #000;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+  @media screen and (max-width: 375px) {
+    width: 100%;
+    margin: 0;
+    margin-top: 10px;
+  }
 `
 
 export const VideoList: React.FC = () => {

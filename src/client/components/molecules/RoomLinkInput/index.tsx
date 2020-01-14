@@ -20,6 +20,10 @@ const Label = styled.label`
   text-align: center;
   background-color: #5cd7da;
   box-sizing: border-box;
+
+  @media screen and (max-width: 375px) {
+    display: none;
+  }
 `
 
 const Input = styled.input`

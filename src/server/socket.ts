@@ -36,8 +36,6 @@ export const connectSocket = (server: Server): void => {
 
       const rooms = Object.keys(io.sockets.adapter.rooms)
 
-      console.log(rooms)
-
       if (!rooms.includes(roomId)) {
         console.log(`====> [${types.ROOM_NOT_FOUND}]: roomId is "${roomId}"`)
         socket.to(socket.id).emit(types.ROOM_NOT_FOUND)
@@ -68,6 +66,10 @@ export const connectSocket = (server: Server): void => {
 
     socket.on('disconnect', () => {
       console.log(`====> [disconnect]: roomId is ${id}`)
+
+      if (id) {
+        socket.broadcast.to(id).emit(types.EXIT, { fromId: socket.id })
+      }
     })
 
     const transferArray: Array<SocketType> = [types.OFFER, types.ANSWER, types.CANDIDATE]
