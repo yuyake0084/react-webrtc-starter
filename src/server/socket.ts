@@ -1,6 +1,5 @@
 import { Server } from 'http'
 import socketIO from 'socket.io'
-import redis from 'socket.io-redis'
 import * as types from '@client/utils/connectionTypes'
 
 type SocketType = typeof types[keyof typeof types]
@@ -15,11 +14,6 @@ export const connectSocket = (server: Server): void => {
     transports: ['websocket'],
   })
 
-  // io.adapter(redis({
-  //   host: '127.0.0.1',
-  //   port: process.env.REDIS_PORT as number,
-  // }))
-
   io.on('connection', (socket: socketIO.Socket & Custom) => {
     console.log('====> connect', socket.id)
     let id: string | null = null
@@ -32,9 +26,8 @@ export const connectSocket = (server: Server): void => {
     })
 
     socket.on(types.CALL, ({ roomId }) => {
-      console.log(`====> [${types.CALL}]: roomId is "${roomId}"`)
-
       const rooms = Object.keys(io.sockets.adapter.rooms)
+      console.log(`====> [${types.CALL}]: roomId is "${roomId}"`, rooms)
 
       if (!rooms.includes(roomId)) {
         console.log(`====> [${types.ROOM_NOT_FOUND}]: roomId is "${roomId}"`)
