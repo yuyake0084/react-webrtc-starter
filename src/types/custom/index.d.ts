@@ -4,7 +4,7 @@ declare interface Window {
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    readonly PORT: string | undefined
+    readonly PORT: number | undefined
     readonly NODE_ENV: 'test' | 'development' | 'production'
     readonly IS_BROWSER: 'true' | undefined
     readonly REDIS_URL: string | undefined
