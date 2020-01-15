@@ -7,6 +7,11 @@ const MainComponent = styled.main`
   align-items: center;
   height: calc(100vh - 60px);
   padding: 20px;
+
+  @media screen and(max-width: 375px) {
+    display: block;
+    height: auto;
+  }
 `
 
 export const Main: React.FC = ({ children }) => {

@@ -62,6 +62,10 @@ export const reducer = (state: State = initialState, action: Actions): State => 
       }
 
     case types.ADD_STREAM:
+      if (state.streams.find(({ stream }) => stream.id === action.payload.stream.id)) {
+        return state
+      }
+
       return {
         ...state,
         streams: [...state.streams, action.payload],
