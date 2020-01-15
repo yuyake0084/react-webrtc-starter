@@ -1,5 +1,6 @@
 import { createServer } from 'http'
 import express from 'express'
+import sticky from 'sticky-session'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
 
@@ -8,7 +9,7 @@ import { connectSocket } from './socket'
 
 export const runServer = (): void => {
   const app = express()
-  const port = process.env.PORT || 3000
+  const port = parseInt(`${process.env.PORT}`, 10) || 3000
 
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
@@ -37,10 +38,11 @@ export const runServer = (): void => {
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
+    const isWorker = sticky.listen(server, port)
 
-    server.listen(port, () => {
-      console.log(`Listening on ${port}!🎉`)
-    })
+    if (!isWorker) {
+      throw new Error('Cannot create server')
+    }
 
     connectSocket(server)
 

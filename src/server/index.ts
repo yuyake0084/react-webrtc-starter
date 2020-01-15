@@ -14,7 +14,11 @@ if (isProd) {
   const numCPUs = cpus().length
 
   if (cluster.isMaster) {
-    ;[...new Array(numCPUs)].forEach(() => cluster.fork())
+    ;[...new Array(numCPUs)].forEach(() => {
+      const worker = cluster.fork()
+
+      console.log(`CLUSTER: Worker ${worker} started`)
+    })
 
     cluster.on('exit', (worker, code, signal) => {
       console.log(`Restarting ${worker.process.pid}. ${code || signal}`)

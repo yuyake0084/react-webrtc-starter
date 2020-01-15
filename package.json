@@ -153,6 +153,7 @@
     "@types/socket.io": "^2.1.4",
     "@types/socket.io-client": "^1.4.32",
     "@types/socket.io-redis": "^1.0.25",
+    "@types/sticky-session": "^1.1.0",
     "@types/storybook__addon-storyshots": "5.1.2",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "4.4.1",
@@ -238,6 +239,8 @@
     "rimraf": "^3.0.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
+    "socket.io-redis": "^5.2.0",
+    "sticky-session": "^1.1.2",
     "styled-components": "4.4.1",
     "ua-parser-js": "0.7.21",
     "webpack": "^4.41.5"

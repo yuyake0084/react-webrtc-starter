@@ -1,5 +1,6 @@
 import { Server } from 'http'
 import socketIO from 'socket.io'
+import redis from 'socket.io-redis'
 import * as types from '@client/utils/connectionTypes'
 
 type SocketType = typeof types[keyof typeof types]
@@ -10,7 +11,23 @@ type Custom = {
 }
 
 export const connectSocket = (server: Server): void => {
-  const io = socketIO(server, {
+  const io = socketIO()
+
+  console.log('hoge', process.env.REDIS_PORT)
+  if (typeof process.env.REDIS_PORT === 'undefined') {
+    throw new Error('process.env.REDIS_PORT is not defined.')
+  }
+  if (typeof process.env.PORT === 'undefined') {
+    throw new Error('process.env.PORT is not defined.')
+  }
+
+  io.adapter(
+    redis({
+      host: '127.0.0.1',
+      port: parseInt(process.env.REDIS_PORT, 10),
+    }),
+  )
+  io.attach(server, {
     transports: ['websocket'],
   })
 
