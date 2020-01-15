@@ -40,11 +40,9 @@ export const runServer = (): void => {
     const server = createServer(app)
     const isWorker = sticky.listen(server, port)
 
-    if (!isWorker) {
-      throw new Error('Cannot create server')
+    if (isWorker) {
+      connectSocket(server)
     }
-
-    connectSocket(server)
 
     server.on('error', (err: NodeJS.ErrnoException) => {
       if (err.syscall !== 'listen') throw err
