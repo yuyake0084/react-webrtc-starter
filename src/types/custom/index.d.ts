@@ -7,6 +7,6 @@ declare namespace NodeJS {
     readonly PORT: string | undefined
     readonly NODE_ENV: 'test' | 'development' | 'production'
     readonly IS_BROWSER: 'true' | undefined
-    readonly REDIS_PORT: string | undefined
+    readonly REDIS_URL: string | undefined
   }
 }

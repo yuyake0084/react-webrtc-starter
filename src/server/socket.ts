@@ -1,6 +1,6 @@
 import { Server } from 'http'
 import socketIO from 'socket.io'
-import redis from 'socket.io-redis'
+import redisAdapter from 'socket.io-redis'
 import * as types from '@client/utils/connectionTypes'
 
 type SocketType = typeof types[keyof typeof types]
@@ -11,19 +11,11 @@ type Custom = {
 }
 
 export const connectSocket = (server: Server): void => {
+  const { NODE_ENV, REDIS_URL } = process.env
   const io = socketIO()
 
-  if (typeof process.env.REDIS_PORT === 'undefined') {
-    throw new Error('process.env.REDIS_PORT is not defined.')
-  }
-
-  if (process.env.NODE_ENV === 'production') {
-    io.adapter(
-      redis({
-        host: '127.0.0.1',
-        port: parseInt(process.env.REDIS_PORT, 10),
-      }),
-    )
+  if (NODE_ENV === 'production' && typeof REDIS_URL === 'string') {
+    io.adapter(redisAdapter(REDIS_URL))
   }
 
   io.attach(server, {

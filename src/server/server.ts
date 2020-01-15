@@ -1,5 +1,6 @@
 import { createServer } from 'http'
 import express from 'express'
+import { cpus } from 'os'
 import sticky from 'sticky-session'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
@@ -38,7 +39,10 @@ export const runServer = (): void => {
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
-    const isWorker = sticky.listen(server, port)
+    const workers = process.env.NODE_ENV === 'production' ? cpus().length : 1
+    const isWorker = sticky.listen(server, port, {
+      workers,
+    })
 
     if (isWorker) {
       connectSocket(server)
