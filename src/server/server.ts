@@ -9,7 +9,7 @@ import { connectSocket } from './socket'
 
 export const runServer = (workers: number): void => {
   const app = express()
-  const port = parseInt(`${process.env.PORT}`, 10) || 3000
+  const port = process.env.PORT || 3000
 
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
@@ -38,7 +38,7 @@ export const runServer = (workers: number): void => {
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
-    const isWorker = sticky.listen(server, port, {
+    const isWorker = sticky.listen(server, port as number, {
       workers,
     })
 
