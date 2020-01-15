@@ -27,7 +27,8 @@ export const connectSocket = (server: Server): void => {
     let id: string | null = null
 
     socket.on(types.JOIN, ({ roomId }) => {
-      console.log(`====> [${types.JOIN}]: create room "${roomId}"`)
+      const rooms = Object.keys(io.sockets.adapter.rooms)
+      console.log(`====> [${types.JOIN}]: create room "${roomId}"`, rooms)
 
       id = roomId
       socket.join(roomId)

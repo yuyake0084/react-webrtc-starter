@@ -17,7 +17,7 @@ if (isProd) {
     ;[...new Array(numCPUs)].forEach(() => {
       const worker = cluster.fork()
 
-      console.log(`CLUSTER: Worker ${worker} started`)
+      console.log(`CLUSTER: Worker ${worker.id} started`)
     })
 
     cluster.on('exit', (worker, code, signal) => {
@@ -25,10 +25,10 @@ if (isProd) {
       cluster.fork()
     })
   } else {
-    runServer()
+    runServer(numCPUs)
   }
 } else {
-  runServer()
+  runServer(1)
 }
 
 process.on('uncaughtException', err => {
