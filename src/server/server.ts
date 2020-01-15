@@ -11,8 +11,6 @@ export const runServer = (workers: number): void => {
   const app = express()
   const port = process.env.PORT || 3000
 
-  console.log('port', port)
-
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
   app.use(compression({ level: 5 }))
@@ -40,6 +38,7 @@ export const runServer = (workers: number): void => {
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
+    // @ts-ignore
     const isWorker = sticky.listen(server, port, {
       workers,
     })
