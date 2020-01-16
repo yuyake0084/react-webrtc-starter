@@ -45,7 +45,11 @@ export const runServer = (workers: number): void => {
       workers,
     })
 
-    if (isWorker) {
+    if (!isWorker) {
+      server.once('listening', () => {
+        console.log(`Listen!🎉 port is ${port}`)
+      })
+    } else {
       connectSocket(server)
     }
 

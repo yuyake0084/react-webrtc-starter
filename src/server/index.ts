@@ -28,7 +28,7 @@ if (isProd) {
     runServer(numCPUs)
   }
 } else {
-  runServer(1)
+  runServer(2)
 }
 
 process.on('uncaughtException', err => {
