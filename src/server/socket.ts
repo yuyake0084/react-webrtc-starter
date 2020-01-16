@@ -14,13 +14,13 @@ export const connectSocket = (server: Server): void => {
   const { NODE_ENV, REDIS_URL } = process.env
   const io = socketIO()
 
-  if (NODE_ENV === 'production') {
-    if (!REDIS_URL) {
-      throw new Error('REDIS_URL is not defined.')
-    }
+  // if (NODE_ENV === 'production') {
+  //   if (!REDIS_URL) {
+  //     throw new Error('REDIS_URL is not defined.')
+  //   }
 
-    io.adapter(redisAdapter(REDIS_URL))
-  }
+  //   io.adapter(redisAdapter(REDIS_URL))
+  // }
 
   io.attach(server, {
     transports: ['websocket'],
