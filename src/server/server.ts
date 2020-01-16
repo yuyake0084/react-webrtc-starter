@@ -38,6 +38,8 @@ export const runServer = (workers: number): void => {
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
+    console.log('port', typeof port, port)
+    console.log('process.env.PORT', typeof process.env.PORT, process.env.PORT)
     // @ts-ignore
     const isWorker = sticky.listen(server, port, {
       workers,
