@@ -38,25 +38,17 @@ export const runServer = (workers: number): void => {
 
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
-
-    server.listen(port, () => {
-      console.log(`Listening on ${port}🎉`)
+    const isWorker = sticky.listen(server, port as number, {
+      workers,
     })
 
-    connectSocket(server)
-
-    // // @ts-ignore
-    // const isWorker = sticky.listen(server, port, {
-    //   workers,
-    // })
-
-    // if (!isWorker) {
-    //   server.once('listening', () => {
-    //     console.log(`Listen!🎉 port is ${port}`)
-    //   })
-    // } else {
-    //   connectSocket(server)
-    // }
+    if (!isWorker) {
+      server.once('listening', () => {
+        console.log(`Listen! port is ${port}🎉`)
+      })
+    } else {
+      connectSocket(server)
+    }
 
     server.on('error', (err: NodeJS.ErrnoException) => {
       if (err.syscall !== 'listen') throw err
