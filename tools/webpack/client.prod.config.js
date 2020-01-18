@@ -1,4 +1,3 @@
-const { resolve } = require('path')
 const webpack = require('webpack')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')

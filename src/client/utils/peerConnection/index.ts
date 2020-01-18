@@ -3,6 +3,7 @@ import moment from 'moment'
 import { getStore } from '@client/store/getStore'
 import * as connectionsAction from '@client/actions/connections'
 import * as types from '@client/utils/connectionTypes'
+import { logger } from '@client/utils/logger'
 
 type ClientId = string
 
@@ -104,7 +105,7 @@ class PeerConnection {
       store.dispatch(connectionsAction.removeStream(clientId))
 
       if (this.peerConnections.length) {
-        this.socket?.emit(types.LEAVE, { roomId: this.roomId })
+        this.exit()
       }
     }
   }
@@ -146,7 +147,7 @@ class PeerConnection {
       } = store.getState()
 
       if (!streams.find((item: any) => item.stream.id === stream.id)) {
-        console.log(`[${date()}][addStream]`)
+        logger.log(`[${date()}][addStream]`)
         store.dispatch(connectionsAction.addStream(clientId, stream))
       }
     }
@@ -196,12 +197,12 @@ class PeerConnection {
    * types.CALL受信時に実行
    */
   private createOffer = async ({ fromId }: Data): Promise<void> => {
-    console.log(`[${date()}] createOffer`, {
+    logger.log(`[${date()}] createOffer`, {
       fromId,
     })
 
     if (this.getPeerConnection(fromId)) {
-      console.log('[createOffer]: this RTCPeerConnection has already')
+      logger.log('[createOffer]: this RTCPeerConnection has already')
       return
     }
 
@@ -217,7 +218,7 @@ class PeerConnection {
    * types.OFFER受信時に実行
    */
   public createAnswer = async ({ fromId, sdp }: Data): Promise<void> => {
-    console.log(`[${date()}][createAnswer]`, {
+    logger.log(`[${date()}][createAnswer]`, {
       fromId,
       sdp,
     })
@@ -225,7 +226,7 @@ class PeerConnection {
     const pc = this.prepareConnection(fromId)
 
     if (!pc) {
-      console.log('[createAnswer]: hasnt this RTCPeerConnection anymore')
+      logger.log('[createAnswer]: hasnt this RTCPeerConnection anymore')
       return
     }
 
@@ -246,7 +247,7 @@ class PeerConnection {
    * types.ANSWER受信時に実行
    */
   public receivedAnswer = async ({ fromId, sdp }: Data): Promise<void> => {
-    console.log(`[${date()}][receivedAnswer]`, {
+    logger.log(`[${date()}][receivedAnswer]`, {
       fromId,
       sdp,
     })
@@ -260,7 +261,6 @@ class PeerConnection {
 
     try {
       await pc.setRemoteDescription(receivedAnswer)
-      console.log('setRemoteDescription complete!')
     } catch (e) {
       console.log(e)
     }
@@ -294,7 +294,7 @@ class PeerConnection {
       sdp: sessionDescription,
     }
 
-    console.log(`[${date()}][sendSDP]`, data)
+    logger.log(`[${date()}][sendSDP]`, data)
     this.socket?.emit(sessionDescription.type, data)
   }
 
@@ -302,7 +302,10 @@ class PeerConnection {
    * 退室処理
    */
   public exit = () => {
-    this.socket?.emit(types.EXIT, { roomId: this.roomId })
+    if (this.socket) {
+      this.socket.disconnect()
+      this.socket?.emit(types.EXIT, { roomId: this.roomId })
+    }
   }
 }
 
