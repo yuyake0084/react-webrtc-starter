@@ -3,22 +3,26 @@ import styled from 'styled-components'
 
 const ButtonComponent = styled.button`
   display: block;
-  padding: 16px 40px;
+  padding: 12px 40px;
   color: #fff
-  border-radius: 4px;
+  border-radius: 50px;
   font-size: 20px;
   cursor: pointer;
   border: none;
   outline: none;
+  border: 2px solid transparent;
+  letter-spacing: 0.5px;
   transition: all 0.3s;
 
   ${({ color }) => `
     background-color: ${color};
+  
+    &:hover {
+      color: ${color};
+      background-color: #fff;
+      border-color: ${color};
+    }
   `}
-
-  &:hover {
-    opacity: 0.7;
-  }
 `
 
 type Props = {

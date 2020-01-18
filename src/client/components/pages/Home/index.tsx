@@ -12,7 +12,7 @@ import { CreateRoomForm } from '@client/components/organisms'
 
 const Box = styled.div`
   width: 500px;
-  padding: 100px;
+  padding: 80px 100px 50px;
   background-color: #fff;
   text-align: center;
   border-radius: 4px;
@@ -21,11 +21,11 @@ const Box = styled.div`
 `
 
 export const Home: React.FC = () => {
-  const { roomId, stream } = useSelector(connectionsSelector)
+  const { isConnecting, roomId, stream } = useSelector(connectionsSelector)
 
   return (
     <>
-      {roomId && stream ? (
+      {isConnecting && roomId && stream ? (
         <Redirect to={`/room/${roomId}`} />
       ) : (
         <>

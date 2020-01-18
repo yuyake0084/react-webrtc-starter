@@ -23,7 +23,7 @@ const Label = styled.label`
   background-color: #5cd7da;
   box-sizing: border-box;
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 500px) {
     display: none;
   }
 `
@@ -51,6 +51,7 @@ export const RoomLinkInput: React.FC = () => {
   const handleClickInput = (e: React.MouseEvent<HTMLInputElement>): void => {
     e.preventDefault()
     e.currentTarget.select()
+    document.execCommand('copy')
   }
   const handleClickButton = (e: React.MouseEvent<HTMLButtonElement>): void => {
     const input = inputRef.current
