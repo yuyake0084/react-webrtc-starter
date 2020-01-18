@@ -74,7 +74,7 @@ export const connectSocketFailure = (error: Error) =>
     },
   } as const)
 
-export const callRoom = (roomId: string) =>
+export const callRoom = (roomId: State['roomId'] = null) =>
   ({
     type: types.CALL_ROOM,
     payload: {
@@ -85,7 +85,6 @@ export const callRoom = (roomId: string) =>
 export const callRoomSuccess = () =>
   ({
     type: types.CALL_ROOM_SUCCESS,
-    payload: {},
   } as const)
 
 export const exitRoom = () =>

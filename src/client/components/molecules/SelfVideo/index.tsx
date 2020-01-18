@@ -1,9 +1,18 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 import { connectionsSelector } from '@client/selectors'
 import { Video } from '@client/components/atoms'
 import { VideoMenu } from '@client/components/molecules'
-import { Container, VideoBox } from './styles'
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const VideoBox = styled.div`
+  position: relative;
+`
 
 export const SelfVideo: React.FC = () => {
   const [isMouseEnter, setMouseEnter] = React.useState(false)
@@ -22,7 +31,7 @@ export const SelfVideo: React.FC = () => {
   return (
     <Container>
       <VideoBox onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <Video autoplay muted={false} width={960} height={540} srcObject={stream} />
+        <Video autoplay muted width={960} height={540} srcObject={stream} />
         {isConnecting && isMouseEnter && <VideoMenu />}
       </VideoBox>
     </Container>
