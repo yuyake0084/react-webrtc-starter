@@ -1,13 +1,13 @@
 import { Server } from 'http'
+import uuid from 'uuid'
 import socketIO from 'socket.io'
 import redisAdapter from 'socket.io-redis'
 import * as types from '@client/utils/connectionTypes'
 
 type SocketType = typeof types[keyof typeof types]
 
-type Custom = {
+type Data = {
   roomId: string
-  from?: string
 }
 
 export const connectSocket = (server: Server): void => {
@@ -30,25 +30,42 @@ export const connectSocket = (server: Server): void => {
     transports: ['websocket'],
   })
 
-  io.on('connection', (socket: socketIO.Socket & Custom) => {
-    console.log('====> connect', socket.id)
+  io.on('connection', (socket: socketIO.Socket & Data) => {
+    console.log('====> [connect]', socket.id)
     let id: string | null = null
 
-    socket.on(types.JOIN, ({ roomId }) => {
-      const rooms = Object.keys(io.sockets.adapter.rooms)
-      console.log(`====> [${types.JOIN}]: create room "${roomId}"`, rooms)
-
+    function createRoom(roomId: string): void {
       id = roomId
       socket.join(roomId)
+      io.to(socket.id).emit(types.JOIN, roomId)
+
+      console.log(`====> [${types.JOIN}]:`, {
+        roomId,
+        rooms: Object.keys(io.sockets.adapter.rooms),
+      })
+    }
+
+    /**
+     * JOIN
+     */
+    socket.on(types.JOIN, data => {
+      const roomId = data.roomId ?? uuid.v4()
+
+      createRoom(roomId)
     })
 
+    /**
+     * CALL
+     */
     socket.on(types.CALL, ({ roomId }) => {
       const rooms = Object.keys(io.sockets.adapter.rooms)
-      console.log(`====> [${types.CALL}]: roomId is "${roomId}"`, rooms)
+      console.log(`====> [${types.CALL}]`, {
+        roomId,
+        rooms,
+      })
 
       if (!rooms.includes(roomId)) {
-        console.log(`====> [${types.ROOM_NOT_FOUND}]: roomId is "${roomId}"`)
-        socket.to(socket.id).emit(types.ROOM_NOT_FOUND)
+        createRoom(roomId)
         return
       }
 
@@ -57,11 +74,18 @@ export const connectSocket = (server: Server): void => {
         fromId: socket.id,
       }
 
+      id = roomId
+      socket.join(roomId)
       socket.broadcast.to(roomId).emit(types.CALL, data)
     })
 
+    /**
+     * EXIT
+     */
     socket.on(types.EXIT, ({ roomId }) => {
-      console.log(`====> [${types.EXIT}]: clientId id ${socket.id}`)
+      console.log(`====> [${types.EXIT}]:`, {
+        clientId: socket.id,
+      })
       const data = {
         fromId: socket.id,
       }
@@ -69,36 +93,48 @@ export const connectSocket = (server: Server): void => {
       socket.broadcast.to(roomId).emit(types.EXIT, data)
     })
 
+    /**
+     * LEAVE
+     */
     socket.on(types.LEAVE, ({ roomId }) => {
-      console.log(`====> [${types.LEAVE}]: roomId is ${roomId}`)
+      console.log(`====> [${types.LEAVE}]:`, {
+        roomId,
+      })
+
       socket.leave(roomId)
     })
 
+    /**
+     * DISCONNECT
+     */
     socket.on('disconnect', () => {
-      console.log(`====> [disconnect]: roomId is ${id}`)
+      console.log(`====> [disconnect]`, {
+        roomId: id,
+      })
 
       if (id) {
         socket.broadcast.to(id).emit(types.EXIT, { fromId: socket.id })
       }
     })
 
-    const transferArray: Array<SocketType> = [types.OFFER, types.ANSWER, types.CANDIDATE]
-
-    transferArray.forEach((type: SocketType) => {
+    /**
+     * OTHER
+     */
+    ;([types.OFFER, types.ANSWER, types.CANDIDATE] as Array<SocketType>).forEach(type => {
       socket.on(type, ({ toId, roomId, sdp }) => {
         const data = {
           fromId: socket.id,
           sdp,
         }
 
-        console.log(
-          `====> [${type}]: roomId is "${roomId}". send to ${toId || 'everyone'} from "${
-            socket.id
-          }".`,
-        )
+        console.log(`====> [${type}]:`, {
+          roomId,
+          sendTo: toId || 'everyone',
+          fromId: socket.id,
+        })
 
         if (toId) {
-          socket.to(roomId).emit(type, data)
+          socket.to(toId).emit(type, data)
         } else {
           socket.broadcast.to(roomId).emit(type, data)
         }
