@@ -103,10 +103,6 @@ class PeerConnection {
       this.peerConnections = this.peerConnections.filter(({ id }) => id !== clientId)
 
       store.dispatch(connectionsAction.removeStream(clientId))
-
-      if (this.peerConnections.length) {
-        this.exit()
-      }
     }
   }
 
@@ -303,7 +299,6 @@ class PeerConnection {
    */
   public exit = () => {
     if (this.socket) {
-      this.socket.disconnect()
       this.socket?.emit(types.EXIT, { roomId: this.roomId })
     }
   }

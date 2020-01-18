@@ -24,7 +24,7 @@ export const CreateRoomForm: React.FC = () => {
   const dispatch = useDispatch()
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
-    dispatch(connectionsAction.connectSocket(''))
+    dispatch(connectionsAction.connectSocket())
   }
 
   React.useEffect(() => {
