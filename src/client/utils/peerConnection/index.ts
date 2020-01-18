@@ -1,14 +1,18 @@
 import io from 'socket.io-client'
+import moment from 'moment'
 import { getStore } from '@client/store/getStore'
 import * as connectionsAction from '@client/actions/connections'
 import * as types from '@client/utils/connectionTypes'
 
 type ClientId = string
 
-export interface SessionDescription {
+export interface Data {
+  roomId?: string
   fromId: ClientId
   sdp: RTCSessionDescription
 }
+
+const date = () => moment().format('YYYY-MM-DD HH:mm:ss.SSS')
 
 class PeerConnection {
   private peerConnections: Array<{
@@ -16,8 +20,8 @@ class PeerConnection {
     pc: RTCPeerConnection
   }>
   private socket: null | SocketIOClient.Socket
-  private roomId: null | string
   private stream: null | MediaStream
+  public roomId: null | string
 
   constructor() {
     this.peerConnections = []
@@ -26,33 +30,33 @@ class PeerConnection {
     this.stream = null
   }
 
-  public connectSocket = (
-    stream: MediaStream,
-    roomId: string,
-    isRoomCreator: boolean = false,
-  ): void => {
-    this.socket = io(process.env.DOMAIN as string, {
-      transports: ['websocket', 'polling'],
-    })
-    this.roomId = roomId
-    this.stream = stream
+  public connectSocket = (stream: MediaStream, roomId: string | null): Promise<string> => {
+    return new Promise(resolve => {
+      this.socket = io(process.env.DOMAIN as string, {
+        transports: ['websocket', 'polling'],
+      })
+      this.stream = stream
 
-    this.socket.on('connect', () => {
-      this.socket?.emit(types.JOIN, { roomId })
+      this.socket.on('connect', () => {
+        const type = roomId === null ? types.JOIN : types.CALL
 
-      if (!isRoomCreator) {
-        this.socket?.emit(types.CALL, { roomId })
-      }
-    })
-    this.socket.on(types.ROOM_NOT_FOUND, () => {
-      console.log('部屋ないよーーーーー')
-    })
+        if (roomId && type === types.CALL) {
+          this.roomId = roomId
+          resolve(roomId)
+        }
 
-    this.socket.on(types.CALL, this.createOffer)
-    this.socket.on(types.OFFER, this.createAnswer)
-    this.socket.on(types.ANSWER, this.receivedAnswer)
-    this.socket.on(types.CANDIDATE, this.receivedCandidate)
-    this.socket.on(types.EXIT, ({ fromId }: Record<string, any>) => this.disconnect(fromId))
+        this.socket?.emit(type, { roomId })
+      })
+      this.socket.on(types.JOIN, (roomId: string) => {
+        this.roomId = roomId
+        resolve(roomId)
+      })
+      this.socket.on(types.CALL, this.createOffer)
+      this.socket.on(types.OFFER, this.createAnswer)
+      this.socket.on(types.ANSWER, this.receivedAnswer)
+      this.socket.on(types.CANDIDATE, this.receivedCandidate)
+      this.socket.on(types.EXIT, ({ fromId }: Data) => this.disconnect(fromId))
+    })
   }
 
   /**
@@ -137,7 +141,14 @@ class PeerConnection {
     const [stream] = e.streams
 
     if (store) {
-      store.dispatch(connectionsAction.addStream(clientId, stream))
+      const {
+        connections: { streams },
+      } = store.getState()
+
+      if (!streams.find((item: any) => item.stream.id === stream.id)) {
+        console.log(`[${date()}][addStream]`)
+        store.dispatch(connectionsAction.addStream(clientId, stream))
+      }
     }
   }
 
@@ -145,7 +156,7 @@ class PeerConnection {
    * setLocalDescriptionが実行されると発火
    */
   private handleIceCandidate = (e: RTCPeerConnectionIceEvent, clientId: ClientId): void => {
-    console.log('====> handleIcecandidate')
+    // console.log('====> handleIcecandidate')
 
     // for Tricle ICE
     if (!!e.candidate) {
@@ -184,10 +195,13 @@ class PeerConnection {
   /**
    * types.CALL受信時に実行
    */
-  private createOffer = async ({ fromId }: SessionDescription): Promise<void> => {
-    console.log('====> createOffer')
+  private createOffer = async ({ fromId }: Data): Promise<void> => {
+    console.log(`[${date()}] createOffer`, {
+      fromId,
+    })
 
     if (this.getPeerConnection(fromId)) {
+      console.log('[createOffer]: this RTCPeerConnection has already')
       return
     }
 
@@ -202,12 +216,16 @@ class PeerConnection {
   /**
    * types.OFFER受信時に実行
    */
-  public createAnswer = async ({ fromId, sdp }: SessionDescription): Promise<void> => {
-    console.log('====> createAnswer')
+  public createAnswer = async ({ fromId, sdp }: Data): Promise<void> => {
+    console.log(`[${date()}][createAnswer]`, {
+      fromId,
+      sdp,
+    })
     const receivedOffer = new RTCSessionDescription(sdp)
     const pc = this.prepareConnection(fromId)
 
     if (!pc) {
+      console.log('[createAnswer]: hasnt this RTCPeerConnection anymore')
       return
     }
 
@@ -227,18 +245,22 @@ class PeerConnection {
   /**
    * types.ANSWER受信時に実行
    */
-  public receivedAnswer = async ({ fromId, sdp }: SessionDescription): Promise<void> => {
-    console.log('====> received answer')
+  public receivedAnswer = async ({ fromId, sdp }: Data): Promise<void> => {
+    console.log(`[${date()}][receivedAnswer]`, {
+      fromId,
+      sdp,
+    })
     const receivedAnswer = new RTCSessionDescription(sdp)
     const pc = this.getPeerConnection(fromId)
 
     if (!pc) {
-      console.log('Cound not find RTCPeerConnection.')
+      console.log('[receivedAnswer]: Cound not find RTCPeerConnection')
       return
     }
 
     try {
       await pc.setRemoteDescription(receivedAnswer)
+      console.log('setRemoteDescription complete!')
     } catch (e) {
       console.log(e)
     }
@@ -248,7 +270,7 @@ class PeerConnection {
     const candidate = new RTCIceCandidate(sdp.ice)
     const pc = this.getPeerConnection(fromId)
 
-    console.log('====> receivedCandidate')
+    // console.log('====> receivedCandidate')
 
     if (pc) {
       // MEMO: addIceCandidateはsetRemoteDescriptionを実行してからでないと動作しない
@@ -272,6 +294,7 @@ class PeerConnection {
       sdp: sessionDescription,
     }
 
+    console.log(`[${date()}][sendSDP]`, data)
     this.socket?.emit(sessionDescription.type, data)
   }
 
