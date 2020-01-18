@@ -50,7 +50,7 @@ export const getUserMediaFailure = (error: Error) =>
     },
   } as const)
 
-export const connectSocket = (roomId: string) =>
+export const connectSocket = (roomId: string | null = null) =>
   ({
     type: types.CONNECT_SOCKET,
     payload: {

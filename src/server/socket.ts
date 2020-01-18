@@ -84,6 +84,7 @@ export const connectSocket = (server: Server): void => {
      */
     socket.on(types.EXIT, ({ roomId }) => {
       console.log(`====> [${types.EXIT}]:`, {
+        roomId,
         clientId: socket.id,
       })
       const data = {
@@ -99,6 +100,7 @@ export const connectSocket = (server: Server): void => {
     socket.on(types.LEAVE, ({ roomId }) => {
       console.log(`====> [${types.LEAVE}]:`, {
         roomId,
+        clientId: socket.id,
       })
 
       socket.leave(roomId)
@@ -110,6 +112,7 @@ export const connectSocket = (server: Server): void => {
     socket.on('disconnect', () => {
       console.log(`====> [disconnect]`, {
         roomId: id,
+        clientId: socket.id,
       })
 
       if (id) {
