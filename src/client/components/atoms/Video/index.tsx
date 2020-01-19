@@ -35,7 +35,7 @@ export const Video: React.FC<Props> = ({ width, height, srcObject, ...rest }) =>
 
   return (
     <Wrapper width={width} height={height}>
-      <VideoComponent ref={videoRef} playsinline autoPlay {...rest} />
+      <VideoComponent ref={videoRef} playsInline autoPlay {...rest} />
     </Wrapper>
   )
 }

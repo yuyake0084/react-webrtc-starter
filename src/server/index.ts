@@ -49,26 +49,31 @@ function runServer(): void {
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
 
-    if (isProd) {
-      const workers = cpus().length
-      const isWorker = sticky.listen(server, port as number, {
-        workers,
-      })
+    // if (isProd) {
+    //   const workers = cpus().length
+    //   const isWorker = sticky.listen(server, port as number, {
+    //     workers,
+    //   })
 
-      if (!isWorker) {
-        server.once('listening', () => {
-          console.log(`[${process.env.NODE_ENV}]: Listening on ${port}🎉`)
-        })
-      } else {
-        console.log(`worker: ${cluster.worker.id}`)
-        connectSocket(server)
-      }
-    } else {
-      server.listen(port, () => {
-        console.log(`[${process.env.NODE_ENV}]: Listening on ${port}🎉`)
-      })
-      connectSocket(server)
-    }
+    //   if (!isWorker) {
+    //     server.once('listening', () => {
+    //       console.log(`[${process.env.NODE_ENV}]: Listening on ${port}🎉`)
+    //     })
+    //   } else {
+    //     console.log(`worker: ${cluster.worker.id}`)
+    //     connectSocket(server)
+    //   }
+    // } else {
+    //   server.listen(port, () => {
+    //     console.log(`[${process.env.NODE_ENV}]: Listening on ${port}🎉`)
+    //   })
+    //   connectSocket(server)
+    // }
+
+    server.listen(port, () => {
+      console.log(`[${process.env.NODE_ENV}]: Listening on ${port}🎉`)
+    })
+    connectSocket(server)
 
     server.on('error', (err: NodeJS.ErrnoException) => {
       if (err.syscall !== 'listen') throw err
