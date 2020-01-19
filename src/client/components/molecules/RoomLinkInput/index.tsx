@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { media } from '@client/utils/theme/media'
 
 const Container = styled.div`
   display: flex;
@@ -23,9 +24,9 @@ const Label = styled.label`
   background-color: #5cd7da;
   box-sizing: border-box;
 
-  @media screen and (max-width: 500px) {
+  ${media.phone`
     display: none;
-  }
+  `};
 `
 
 const Input = styled.input`

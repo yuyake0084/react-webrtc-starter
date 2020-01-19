@@ -4,14 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import * as connectionsAction from '@client/actions/connections'
 import { connectionsSelector } from '@client/selectors'
-import { Button } from '@client/components/atoms'
+import { Button, Card } from '@client/components/atoms'
 import { RoomLinkInput, VideoList } from '@client/components/molecules'
 
-const Wrapper = styled.div`
-  position: relative;
-  width: 100%;
-  padding: 50px 0;
-`
+const Wrapper = styled.div``
 
 const ButtonBox = styled.div`
   display: flex;
@@ -35,7 +31,7 @@ export const VideoWrapper: React.FC = () => {
   }
 
   return (
-    <Wrapper>
+    <Card>
       <RoomLinkInputBox>
         <RoomLinkInput />
       </RoomLinkInputBox>
@@ -45,6 +41,6 @@ export const VideoWrapper: React.FC = () => {
           <Button value="Join!" onClick={handleClick} />
         </ButtonBox>
       )}
-    </Wrapper>
+    </Card>
   )
 }

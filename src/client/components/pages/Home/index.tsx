@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux'
 import { connectionsSelector } from '@client/selectors'
 
 // components
-import { Head, Main } from '@client/components/atoms'
+import { Error, Head, Main } from '@client/components/atoms'
 import { CreateRoomForm } from '@client/components/organisms'
 
 const Box = styled.div`
   width: 500px;
-  padding: 80px 100px 50px;
+  padding: 50px 100px;
   background-color: #fff;
   text-align: center;
   border-radius: 4px;
@@ -21,7 +21,7 @@ const Box = styled.div`
 `
 
 export const Home: React.FC = () => {
-  const { isConnecting, roomId, stream } = useSelector(connectionsSelector)
+  const { isConnecting, error, roomId, stream } = useSelector(connectionsSelector)
 
   return (
     <>
@@ -31,9 +31,7 @@ export const Home: React.FC = () => {
         <>
           <Head title="Home" />
           <Main>
-            <Box>
-              <CreateRoomForm />
-            </Box>
+            <Box>{error ? <Error message={error.message} /> : <CreateRoomForm />}</Box>
           </Main>
         </>
       )}
