@@ -6,6 +6,7 @@ const Wrapper = styled.div`
     max-width: ${width ? `${width}px` : '100%'};
     max-height: ${height ? `${width}px` : '100%'};
   `}
+  background-color: #000;
 `
 
 const VideoComponent = styled.video`

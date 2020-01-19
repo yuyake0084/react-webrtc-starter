@@ -7,7 +7,7 @@ type Props = {
 }
 
 export const Head: React.FC<Props> = ({ title, color = '#20aee5' }) => (
-  <Helmet>
+  <Helmet titleTemplate="%s | React WebRTC Starter">
     <title>{title}</title>
     <meta name="theme-color" content={color} />
   </Helmet>

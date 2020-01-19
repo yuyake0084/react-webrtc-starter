@@ -37,6 +37,7 @@ type Props = {
   color?: string
   style?: Object
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  disabled?: boolean
 }
 
 export const Button: React.FC<Props> = ({ value, color = '#6ed696', ...rest }) => {

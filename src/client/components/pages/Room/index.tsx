@@ -29,7 +29,7 @@ export const Room: React.FC = () => {
         <Redirect to="/thanks" />
       ) : (
         <>
-          <Head title={`${roomId}'s room`} />
+          <Head title="Private room" />
           <Main>
             <VideoWrapper />
           </Main>
