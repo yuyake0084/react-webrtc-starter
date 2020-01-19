@@ -12,6 +12,10 @@ const Heading = styled.h2`
   color: #aaa;
   font-size: 30px;
   text-align: center;
+
+  ${media.phone`
+    font-size: 20px;
+  `}
 `
 
 const ButtonBox = styled.div`
@@ -36,7 +40,7 @@ export const Thanks: React.FC = () => {
         <>
           <Head title="Thank you!" />
           <Main>
-            <Card>
+            <Card width={500}>
               <Heading>Thank you!</Heading>
               <ButtonBox>
                 <Button value="Top" onClick={handleClickButton} />
