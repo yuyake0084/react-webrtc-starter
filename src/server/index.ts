@@ -50,7 +50,7 @@ function runServer(): void {
     const server = createServer(app)
 
     if (isProd) {
-      const workers = 2
+      const workers = cpus().length
       const isWorker = sticky.listen(server, port as number, {
         workers,
       })
