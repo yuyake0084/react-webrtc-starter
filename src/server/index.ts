@@ -3,6 +3,7 @@ import { cpus } from 'os'
 import { config } from 'dotenv'
 import { join } from 'path'
 import express from 'express'
+import cluster from 'cluster'
 import sticky from 'sticky-session'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
@@ -13,7 +14,7 @@ import { connectSocket } from './socket'
 const isProd = process.env.NODE_ENV === 'production'
 
 config({
-  path: isProd ? join(__dirname, '../../.env.prod') : join(__dirname, '../../.env.dev'),
+  path: isProd ? join(__dirname, '../../.env.dev') : join(__dirname, '../../.env.dev'),
 })
 
 function runServer(): void {
@@ -49,7 +50,7 @@ function runServer(): void {
     const server = createServer(app)
 
     if (isProd) {
-      const workers = cpus().length
+      const workers = 2
       const isWorker = sticky.listen(server, port as number, {
         workers,
       })
@@ -59,6 +60,7 @@ function runServer(): void {
           console.log(`[${process.env.NODE_ENV}]: Listening on ${port}🎉`)
         })
       } else {
+        console.log(`worker: ${cluster.worker.id}`)
         connectSocket(server)
       }
     } else {

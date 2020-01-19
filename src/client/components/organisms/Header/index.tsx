@@ -45,7 +45,7 @@ export const Header: React.FC = () => {
     <HeaderComponent>
       <Link to="" onClick={handleClick}>
         <Img src="https://cloud.soba-project.com/images/webrtclogo.png" alt="WebRTC" />
-        <Heading>React with WebRTC</Heading>
+        <Heading>React WebRTC Starter</Heading>
       </Link>
       <HeaderMenu />
     </HeaderComponent>
