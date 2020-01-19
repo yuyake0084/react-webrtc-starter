@@ -36,6 +36,7 @@ export const Header: React.FC = () => {
   const dispatch = useDispatch()
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault()
+    dispatch(connectionsAction.exitRoom())
     dispatch(connectionsAction.resetState())
     history.push('/')
   }

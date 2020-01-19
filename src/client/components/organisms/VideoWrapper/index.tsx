@@ -7,8 +7,6 @@ import { connectionsSelector } from '@client/selectors'
 import { Button, Card } from '@client/components/atoms'
 import { RoomLinkInput, VideoList } from '@client/components/molecules'
 
-const Wrapper = styled.div``
-
 const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
