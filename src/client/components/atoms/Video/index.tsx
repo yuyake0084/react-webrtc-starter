@@ -15,7 +15,6 @@ const VideoComponent = styled.video`
 `
 
 type Props = {
-  autoplay?: HTMLVideoElement['autoplay']
   muted?: HTMLVideoElement['muted']
   width?: HTMLVideoElement['width']
   height?: HTMLVideoElement['height']
@@ -36,7 +35,7 @@ export const Video: React.FC<Props> = ({ width, height, srcObject, ...rest }) =>
 
   return (
     <Wrapper width={width} height={height}>
-      <VideoComponent ref={videoRef} {...rest} />
+      <VideoComponent ref={videoRef} playsinline autoPlay {...rest} />
     </Wrapper>
   )
 }
