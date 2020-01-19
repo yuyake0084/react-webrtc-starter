@@ -24,6 +24,7 @@ const VideoBox = styled.div`
   height: 100%;
   min-height: 200px;
   margin: 0.5%;
+  overflow: hidden;
   background-color: #000;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);

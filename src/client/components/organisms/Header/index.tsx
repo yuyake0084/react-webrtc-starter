@@ -11,6 +11,7 @@ const HeaderComponent = styled.header`
   align-items: center;
   padding: 10px 20px;
   background-color: #5cd7da;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 `
 
 const Link = styled(RouterLink)`

@@ -17,6 +17,7 @@ export function* getUserMedia(
 ): Generator {
   try {
     const { constraints } = action.payload
+
     const stream = yield call(callGetUserMedia, constraints)
 
     yield put(connectionsAction.getUserMediaSuccess(stream as MediaStream))

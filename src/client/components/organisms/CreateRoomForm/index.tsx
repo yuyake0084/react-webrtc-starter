@@ -1,12 +1,9 @@
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 // actions
 import * as connectionsAction from '@client/actions/connections'
-
-// selectors
-import { connectionsSelector } from '@client/selectors'
 
 // components
 import { Button } from '@client/components/atoms'
