@@ -11,6 +11,11 @@ import { SelfVideo } from '@client/components/molecules'
 
 const Container = styled.div``
 
+const VideoBox = styled.div`
+  overflow: hidden;
+  border-radius: 4px;
+`
+
 const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
@@ -35,9 +40,11 @@ export const CreateRoomForm: React.FC = () => {
 
   return (
     <Container>
-      <SelfVideo />
+      <VideoBox>
+        <SelfVideo />
+      </VideoBox>
       <ButtonBox>
-        <Button value="Create!" onClick={handleClick} />
+        <Button value="Create room!" onClick={handleClick} />
       </ButtonBox>
     </Container>
   )

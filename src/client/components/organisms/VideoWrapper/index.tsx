@@ -31,7 +31,7 @@ export const VideoWrapper: React.FC = () => {
   }
 
   return (
-    <Card>
+    <Card width={1000}>
       <RoomLinkInputBox>
         <RoomLinkInput />
       </RoomLinkInputBox>

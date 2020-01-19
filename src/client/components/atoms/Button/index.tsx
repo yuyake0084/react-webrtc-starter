@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { media } from '@client/utils/theme/media'
 
 const ButtonComponent = styled.button`
   display: block;
@@ -13,6 +14,12 @@ const ButtonComponent = styled.button`
   border: 2px solid transparent;
   letter-spacing: 0.5px;
   transition: all 0.3s;
+
+  ${media.phone`
+    width: 100%;
+    padding: 10px 30px;
+    font-size: 16px;
+  `}
 
   ${({ color }) => `
     background-color: ${color};
