@@ -17,7 +17,7 @@ export const Room: React.FC = () => {
       dispatch(
         connectionsAction.getUserMedia({
           video: true,
-          audio: false,
+          audio: true,
         }),
       )
     }

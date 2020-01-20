@@ -49,6 +49,7 @@ function runServer(): void {
   if (process.env.NODE_ENV !== 'test') {
     const server = createServer(app)
 
+    // WIP: Use cluster
     // if (isProd) {
     //   const workers = cpus().length
     //   const isWorker = sticky.listen(server, port as number, {

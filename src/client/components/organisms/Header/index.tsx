@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import * as connectionsAction from '@client/actions/connections'
@@ -44,7 +44,10 @@ export const Header: React.FC = () => {
   return (
     <HeaderComponent>
       <Link to="" onClick={handleClick}>
-        <Img src="https://cloud.soba-project.com/images/webrtclogo.png" alt="WebRTC" />
+        <Img
+          src="https://res.cloudinary.com/drw7v2tob/image/upload/v1579483556/webrtc_logo_i4exkk.png"
+          alt="WebRTC"
+        />
         <Heading>React WebRTC Starter</Heading>
       </Link>
       <HeaderMenu />
